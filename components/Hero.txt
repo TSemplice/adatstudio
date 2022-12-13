@@ -1,0 +1,199 @@
+<template>
+  <section :class="[
+    $style.hero,
+      {
+        [$style.journal]: data.type && data.type === 'journal'
+      }
+    ]"
+    data-scroll
+    data-scroll-call="hero"
+  >
+    <p
+      v-if="data.smallTitle"
+      :class="$style.smallTitle"
+      data-s-t
+    >
+      {{ data.smallTitle}}
+    </p>
+    <SanityContent
+      :class="$style.mainTitle"
+      v-if="data.title"
+      :blocks="data.title"
+      data-m-t
+    />
+    <div :class="$style.content">
+      <div
+        :class="$style.text"
+        data-scroll
+        data-scroll-speed="0.4"
+      >
+        <SanityContent
+          v-if="data.leftText"
+          :blocks="data.leftText"
+          data-scroll
+          data-scroll-call="text"
+          data-delay="1"
+        />
+      </div>
+      <InsetRoundedBorderImage
+        v-if="data.image"
+        :image="data.image"
+        light
+        data-card
+      />
+      <div
+        :class="$style.text"
+        data-scroll
+        data-scroll-speed="-0.4"
+      >
+        <SanityContent
+          v-if="data.rightText"
+          :blocks="data.rightText"
+          data-scroll
+          data-scroll-call="text"
+        />
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.hero {
+  @apply py-[48px]
+    flex-col
+    items-center
+    text-center
+    lg:pb-[100px];
+
+  &.journal {
+    .smallTitle {
+      font-size: 28px;
+      line-height: 32px;
+
+      @apply mb-[8px]
+        capitalize
+        lg:mb-[16px]
+        lg:text-headline02;
+    }
+
+    .mainTitle {
+      & h1,
+      & h2,
+      & h3,
+      & h4,
+      & h5,
+      & h6,
+      & p {
+        font-size: 48px;
+        line-height: 56px;
+
+        @apply font-heading
+        uppercase
+        lg:text-headline03;
+
+        letter-spacing: 0.04em;
+      }
+    }
+  }
+}
+
+.smallTitle {
+  font-size: 28px;
+  line-height: 32px;
+
+  @apply font-heading
+    mb-[4px]
+    lg:font-heading
+    lg:text-headline05
+    lg:mb-[24px];
+
+  letter-spacing: 0.02em;
+}
+
+.mainTitle {
+  @apply mx-auto
+    mb-[64px]
+    px-6
+    lg:mb-[84px]
+    lg:max-w-[70%];
+
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6,
+  & p {
+    font-size: 48px;
+    line-height: 48px;
+
+    @apply font-heading
+      text-secondary
+      lg:text-headline03;
+  }
+}
+
+.content {
+  @apply flex
+    flex-col
+    px-[24px]
+    gap-x-[36px]
+    justify-center
+    lg:flex-row
+    lg:px-0;
+
+  & > div:nth-of-type(2) {
+    @apply w-full
+      mb-[36px]
+      lg:mb-0
+      lg:w-[41vw];
+
+    flex: 0 0 auto;
+    padding-bottom: 140%;
+
+    @screen lg {
+      padding-bottom: 54.6%;
+    }
+  }
+
+  & .text {
+    font-size: 16px;
+    line-height: 24px;
+
+    @apply w-full
+      text-center
+      font-body
+      font-bold
+      lg:text-paragraph;
+
+    letter-spacing: 0.1em;
+  }
+
+  & > .text:first-of-type {
+    @apply flex
+      flex-col
+      justify-end
+      mb-[36px]
+      lg:pl-[24px]
+      lg:mb-0;
+  }
+
+  & > .text:last-of-type {
+    @apply flex
+      flex-col
+      justify-center
+      lg:pr-[24px];
+  }
+}
+</style>

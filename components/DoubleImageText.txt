@@ -1,0 +1,136 @@
+<template>
+  <section :class="[
+    $style.double,
+    {
+      [$style.right]: data.textPosition && data.textPosition === 'right'
+    }
+  ]">
+    <div>
+      <SanityContent
+        v-if="data.text"
+        :blocks="data.text"
+        data-scroll
+        data-scroll-call="text"
+      />
+    </div>
+    <div :class="$style.images">
+      <InsetRoundedBorderImage
+        v-if="data.vImage"
+        :image="data.vImage"
+        data-scroll
+        data-scroll-speed="-1"
+      />
+      <InsetRoundedBorderImage
+        v-if="data.hImage"
+        :image="data.hImage"
+        data-scroll
+        data-scroll-speed="1"
+      />
+    </div>
+  </section>
+</template>
+
+<script>
+import InsetRoundedBorderImage from './InsetRoundedBorderImage.vue';
+
+  export default {
+    props: {
+        data: {
+            type: Object,
+            required: true
+        }
+    },
+    components: { InsetRoundedBorderImage }
+}
+</script>
+
+<style module lang="postcss">
+.double {
+  @apply flex
+    flex-col
+    lg:flex-row
+    pt-[64px]
+    pb-[64px]
+    px-[24px]
+    lg:pb-[160px]
+    lg:px-[120px];
+
+  & > div {
+    @apply lg:w-[50%];
+  }
+
+  & > div:first-of-type {
+    font-size: 16px;
+    line-height: 24px;
+
+    @apply font-body
+      font-bold
+      mb-[64px]
+      lg:mb-0
+      lg:text-paragraph
+      lg:pr-[120px];
+
+    letter-spacing: 0.1em;
+  }
+
+  & .images {
+      @apply relative
+        flex
+        items-end
+        gap-x-[36px]
+        lg:block
+        lg:pt-[15vw];
+
+    & > div {
+      @apply w-1/2
+        h-0
+        lg:w-full;
+    }
+
+    & > div:first-of-type {
+      padding-bottom: 64%;
+
+      @screen lg {
+        padding-bottom: 128%;
+      }
+    }
+
+    & > div:last-of-type {
+      @apply lg:absolute
+        lg:bottom-[-5%]
+        lg:left-[-90%]
+        z-1;
+
+      padding-bottom: 30%;
+
+      @screen lg {
+        padding-bottom: 52.65%;
+      }
+    }
+  }
+
+  &.right {
+    & > div:first-of-type {
+      @apply pr-0
+        lg:pl-[120px];
+
+      @screen lg {
+        order: 1;
+      }
+    }
+
+    & .images {
+      @screen lg {
+        order: 0;
+      }
+
+      & > div:last-of-type {
+        @apply lg:absolute
+          lg:bottom-[-5%]
+          lg:left-auto
+          lg:right-[-90%];
+      }
+    }
+  }
+}
+</style>

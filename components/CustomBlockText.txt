@@ -1,0 +1,18 @@
+<template>
+  <section>
+    <SanityContent
+      :blocks="data.content"
+    />
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>

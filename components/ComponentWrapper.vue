@@ -1,0 +1,54 @@
+<template>
+ <main :class="[
+    $style.page,
+  ]
+  ">
+  <div :class="$style.content">
+    <component
+      :is="component._type"
+      v-for="(component, i) in components"
+      :key="`${component._key}-${i}`"
+      :data="component"
+    />
+  </div>
+  <slot />
+ </main>
+</template>
+
+<script>
+export default {
+  props: {
+    components: {
+      type: [Array, Object, String, null],
+      default: () => ([])
+    },
+
+    padded: {
+      type: Boolean,
+      default: false
+    },
+
+    noh: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.page {
+  @apply lg:pt-[120px];
+
+  @screen lg {
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+.content {
+  @apply lg:w-1/2
+    lg:pr-12
+    ml-auto
+    overflow-hidden;
+}
+</style>

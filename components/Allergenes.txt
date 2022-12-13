@@ -1,0 +1,267 @@
+<template>
+  <section
+    :class="$style.allergenes"
+  >
+    <div :class="$style.content">
+      <div :class="$style.header">
+        <h4 v-if="data.title">{{ data.title }}</h4>
+        <button
+          aria-label="Allergenes Toggle"
+          @click.prevent="toggleOpen"
+          :class="[
+            {
+              [$style.active]: open
+            }
+          ]"
+        >
+          <p :class="$style.label">{{ $t('view_all') }}</p>
+          <p :class="$style.label">{{ $t('close') }}</p>
+        </button>
+      </div>
+      <transition
+        @enter="listIn"
+        @leave="listOut"
+      >
+        <div v-show="open">
+          <div :class="$style.text">
+            <SanityContent
+              v-if="data.content"
+              :blocks="data.content"
+            />
+          </div>
+        </div>
+      </transition>
+    </div>
+  </section>
+</template>
+
+<script>
+import gsap, { Power4 } from 'gsap'
+
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      open: false,
+      animating: false
+    }
+  },
+
+  methods: {
+    toggleOpen() {
+      if (this.animating) return
+
+      this.open = !this.open
+    },
+
+    listIn(el, done) {
+      this.animating = true
+
+      const tl = gsap.timeline({ onComplete: () => {
+        this.$nuxt.$emit('update-locomotive')
+        this.animating = false
+      }})
+
+      tl
+        .fromTo(el, {
+          height: 0
+        }, {
+          duration: 1.2,
+          height: 'auto',
+          ease: Power4.easeOut
+        })
+        .fromTo(el, {
+          autoAlpha: 0
+        }, {
+          duration: 1.2,
+          autoAlpha: 1,
+          ease: Power4.easeOut
+        }, '-=0.4')
+    },
+
+    listOut(el, done) {
+      this.animating = true
+      const tl = gsap.timeline({ onComplete: () => {
+        this.$nuxt.$emit('update-locomotive')
+        this.animating = false
+      }})
+
+      tl
+        .to(el, {
+          duration: 0.8,
+          autoAlpha: 0,
+          ease: Power4.easeOut
+        })
+        .to(el, {
+          duration: 0.8,
+          height: 0,
+          ease: Power4.easeOut
+        }, '-=0.4')
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.allergenes {
+  @apply px-[12px]
+    lg:px-[24px]
+    mb-[24px];
+}
+
+.content {
+  @apply bg-accent
+    py-[48px]
+    px-[24px]
+    lg:p-[48px];
+
+  border-radius: 24px;
+}
+
+.header {
+  @apply flex
+    items-center
+    justify-between
+    pb-[8px]
+    lg:pb-[12px];
+
+  border-bottom: 1px solid var(--color-primary-dark);
+
+  & h4 {
+    font-size: 20px;
+    line-height: 20px;
+
+    @apply uppercase
+    font-heading
+    text-secondary
+    lg:text-cta;
+
+    letter-spacing: 0.06em;
+  }
+
+  & button {
+    font-size: 16px;
+    line-height: 20px;
+
+    @apply font-body
+      font-bold
+      text-primary
+      relative
+      overflow-hidden
+      capitalize
+      text-right
+      relative;
+
+    letter-spacing: 0.1em;
+    transition: var(--medium-transition);
+
+    @screen lg {
+      font-size: 20px;
+      line-height: 20px;
+    }
+
+    & > p:last-of-type {
+      @apply absolute
+        top-0
+        right-0;
+
+      transform: translate3d(0, 100%, 0);
+    }
+
+    &.active {
+      & > p:first-of-type {
+        transform: translate3d(0, -100%, 0);
+      }
+
+      & > p:last-of-type {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    :global(.no-touchevents) &:hover {
+      @apply opacity-70;
+    }
+
+    /* &::before,
+    &::after {
+      @apply absolute
+        w-full
+        h-px
+        bottom-0
+        left-0
+        bg-primary;
+
+      content: '';
+      transition: var(--medium-alternative-transition);
+    }
+
+    &::after {
+      transition-delay: .16s;
+    }
+
+    &::before {
+      transform: translate3d(-102%, 0, 0);
+      transition-delay: 0s;
+    }
+
+    :global(.no-touchevents) &:hover {
+      &::before {
+        transform: translate3d(0, 0, 0);
+        transition-delay: .16s;
+      }
+
+      &::after {
+        transform: translate3d(102%, 0, 0);
+        transition-delay: 0s;
+      }
+    } */
+  }
+}
+
+.text {
+  @apply py-[24px]
+    pb-0
+    lg:pb-[24px];
+
+  & strong {
+    font-size: 20px;
+    ling-height: 20px;
+
+    @apply block
+      font-heading
+      text-secondary
+      font-normal
+      mb-[24px]
+      lg:text-cta
+      lg:mb-[12px];
+  }
+
+  & ol {
+    list-style: auto;
+    list-style-position: inside;
+  }
+
+  & li,
+  & p {
+    font-size: 16px;
+    line-height: 20px;
+
+    @apply text-light
+      font-bold
+      lg:text-paragraph
+      lg:w-[80%];
+
+    letter-spacing: 0.1em;
+  }
+}
+
+.label {
+  transition: var(--medium-transition);
+}
+</style>

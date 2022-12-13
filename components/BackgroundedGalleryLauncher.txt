@@ -1,0 +1,111 @@
+<template>
+  <section :class="$style.backgroundedGallery">
+    <div
+      :class="$style.content"
+    >
+    <div
+      :class="$style.text"
+      data-scroll
+      data-scroll-call="bgText"
+    >
+      <p v-if="data.smallTitle">{{ data.smallTitle }}</p>
+      <h2 v-if="data.title">{{ data.title }}</h2>
+      <SanityContent
+        v-if="data.description"
+        :blocks="data.description"
+      />
+    </div>
+    <BackgroundedGalleryLauncherItems
+      v-if="data.images && data.images.length"
+      :items="data.images"
+      :ratio="data.ratio"
+    />
+    <UnderlineCta v-if="data.cta">
+      <SanityCta v-bind="data.cta" />
+    </UnderlineCta>
+  </div>
+</section>
+</template>
+
+<script>
+export default {
+  props: {
+      data: {
+          type: Object,
+          required: true
+      }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.backgroundedGallery {
+  @apply py-[32px]
+    px-[12px]
+    mb-[64px]
+    lg:mb-[52px];
+}
+
+.content {
+  @apply flex
+    flex-col
+    items-center
+    bg-secondary
+    overflow-hidden
+    py-[48px]
+    px-[12px]
+    lg:px-0
+    lg:py-[96px];
+
+  border-radius: 24px;
+}
+
+.text {
+  @apply flex
+    flex-col
+    items-center
+    mx-auto
+    lg:max-w-[800px];
+
+  & h2 {
+    font-size: 30px;
+    line-height: 40px;
+
+    @apply text-accent
+      font-heading
+      mb-[24px]
+      lg:text-headline02;
+  }
+
+  & p {
+    font-size: 16px;
+    line-height: 24px;
+
+    @apply w-full
+      text-light
+      font-body
+      font-bold
+      text-center
+      mb-[36px]
+      lg:mb-[72px]
+      lg:text-paragraph;
+
+    max-width: 800px;
+
+    letter-spacing: 0.1em;
+  }
+
+  & > p {
+    font-size: 24px;
+    line-height: 30px;
+
+    @apply text-light
+      font-heading
+      mb-[4px]
+      lg:text-headline05
+      lg:mb-[24px];
+
+    letter-spacing: 0.02em;
+  }
+}
+</style>

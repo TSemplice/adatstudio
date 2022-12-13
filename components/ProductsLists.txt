@@ -1,0 +1,277 @@
+<template>
+  <section
+    :class="$style.lists"
+  >
+    <div
+      v-for="type in lists"
+      v-if="type.products.length"
+      :key="type.label"
+      :class="$style.list"
+    >
+      <div :class="$style.header">
+        <h2
+          v-if="type.label"
+        >
+          {{ type.label }}
+        </h2>
+      </div>
+      <div :class="$style.labels">
+        <span></span>
+        <span>{{ $t('gluten_free') }}</span>
+        <span>{{ $t('vegetarian') }}</span>
+      </div>
+      <ul :class="$style.items">
+        <li
+          v-for="product in type.products"
+          :key="product.title"
+        >
+          <div :class="$style.content">
+            <div>
+              <h3
+                v-if="product.translations[$i18n.locale] && product.translations[$i18n.locale].title"
+              >
+                {{ product.translations[$i18n.locale].title }}
+              </h3>
+              <SanityContent
+                v-if="product.translations[$i18n.locale] && product.translations[$i18n.locale].description"
+                :blocks="product.translations[$i18n.locale].description"
+              />
+            </div>
+            <div :class="$style.other">
+              <div>
+                <span v-if="product.glutenFree">
+                  <p>{{ $t('gluten_free') }}</p>
+                  <GlutenFreeSvg/>
+                </span>
+                <span  v-if="product.vegetarian">
+                  <p>{{ $t('vegetarian') }}</p>
+                  <VegetarianSvg/>
+                </span>
+              </div>
+              <p
+              v-if="product.translations[$i18n.locale] && product.translations[$i18n.locale].price"
+              >
+                {{ product.translations[$i18n.locale].price.toFixed(2) }} €
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    lists: {
+      type: Array,
+      default: () => []
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.lists {
+  @apply flex
+    flex-col
+    px-[12px]
+    mb-[24px]
+    gap-y-[16px]
+    lg:gap-y-[24px];
+}
+
+.list {
+  @apply relative
+    py-[48px]
+    px-[24px]
+    lg:p-[48px]
+    lg:pb-[96px]
+    bg-secondary;
+
+  border-radius: 24px;
+}
+
+.header {
+  border-bottom: 1px solid var(--color-secondary-light);
+
+  & h2 {
+    font-size: 32px;
+    line-height: 40px;
+
+    @apply uppercase
+      font-heading
+      text-accent
+      lg:text-headline03;
+
+    letter-spacing: 0.04em;
+  }
+}
+
+.labels {
+  @apply pt-[48px]
+    pb-[36px]
+    hidden
+    lg:flex;
+
+  & > span:first-of-type {
+    width: 70%;
+  }
+
+  & > span {
+    @apply font-body
+      uppercase;
+
+    font-size: 9px;
+    line-height: 11px;
+
+    letter-spacing: 0.2em;
+  }
+
+  & > span:nth-of-type(2),
+  & > span:last-of-type {
+    @apply w-[80px]
+      text-center;
+  }
+
+  & > span:last-of-type {
+    @apply ml-[12px];
+  }
+}
+
+.items {
+  @apply flex
+    flex-col
+    relative
+    lg:gap-y-[36px];
+
+  & > li:last-of-type {
+    & .content {
+      @apply pb-0;
+
+      &::before {
+        @apply hidden;
+      }
+    }
+  }
+}
+
+.content {
+  @apply flex
+    flex-col
+    relative
+    py-[24px]
+    lg:py-0
+    lg:flex-row;
+
+  &::before {
+    @apply absolute
+      left-1/2
+      bottom-0
+      w-[48px]
+      h-px
+      bg-light
+      lg:hidden;
+
+    content: '';
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  & > div:first-of-type {
+    @apply w-full
+      lg:w-[70%]
+      lg:pr-[120px];
+
+    flex: 0 0 auto;
+
+    & h3 {
+      font-size: 32px;
+      line-height: 38px;
+
+      @apply mb-[8px]
+        font-heading
+        lg:text-paragraph
+        lg:font-heading
+        lg:mb-[12px];
+
+      letter-spacing: 0.02em;
+    }
+
+    & p {
+      font-size: 16px;
+      line-height: 24px;
+
+      @apply mb-[20px]
+        font-body
+        lg:mb-0
+        lg:font-medium
+        lg:text-paragraph;
+
+      letter-spacing: 0.06em;
+
+      & em {
+        @apply uppercase
+          mt-[12px];
+
+        font-size: 10px;
+        line-height: 12px;
+        letter-spacing: 0.2em;
+        font-style: normal;
+      }
+    }
+  }
+
+  .other {
+    @apply w-full
+      flex;
+
+    & > div {
+      @apply inline-flex
+        lg:flex
+        items-start;
+
+      flex: 0 0 auto;
+
+      & span {
+        @apply flex
+          flex-col
+          justify-center
+          items-center
+          w-[80px];
+      }
+
+      & svg {
+        @apply w-[24px]
+          h-auto
+          lg:w-auto
+          lg:h-[30px];
+      }
+
+      & p {
+        @apply uppercase
+          mb-[8px]
+          lg:hidden;
+
+        font-size: 8px;
+        line-height: 10px;
+        letter-spacing: 0.2em;
+      }
+
+      & > span:first-of-type {
+        @apply mr-[12px];
+      }
+    }
+
+    & > p {
+      font-size: 32px;
+      line-height: 38px;
+
+      @apply w-full
+        text-right
+        font-heading
+        lg:text-headline05;
+    }
+  }
+}
+</style>

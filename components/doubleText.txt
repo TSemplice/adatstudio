@@ -1,0 +1,105 @@
+<template>
+  <section :class="$style.double">
+    <SanityContent
+      v-if="data.leftText"
+      :blocks="data.leftText"
+      data-scroll
+      data-scroll-call="doubleText"
+    />
+    <SanityContent
+      v-if="data.rightText"
+      :blocks="data.rightText"
+      data-scroll
+      data-scroll-call="doubleText"
+    />
+  </section>
+</template>
+
+<script>
+  export default {
+    props: {
+      data: {
+        type: Object,
+        required: true
+      }
+    }
+  }
+</script>
+
+<style module lang="postcss">
+.double {
+  @apply flex
+    flex-col
+    lg:flex-row
+    py-[56px]
+    px-[24px]
+    gap-y-[64px]
+    lg:gap-y-0
+    lg:gap-x-[120px]
+    lg:px-[120px];
+
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
+    @apply font-heading
+      mb-[24px]
+      text-center;
+
+    color: #709092;
+  }
+
+  & h1 {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply lg:text-headline03;
+  }
+
+  & h2 {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply lg:text-headline02;
+  }
+
+  & h3 {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply lg:text-headline03;
+  }
+
+  & h4 {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply lg:text-headline04;
+  }
+
+  & h5,
+  & h6 {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply lg:text-headline05;
+  }
+
+  & p {
+    font-size: 16px;
+    line-height: 20px;
+
+    @apply font-body
+      font-bold
+      lg:text-paragraph;
+
+    letter-spacing: 0.1em;
+  }
+
+  & > div {
+    @apply lg:w-1/2;
+  }
+}
+</style>

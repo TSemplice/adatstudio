@@ -1,0 +1,112 @@
+/* purgecss start ignore */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+/* purgecss end ignore */
+@import 'tailwindcss/utilities';
+
+:root {
+  --color-dark: #1E1E1E;
+  --color-light: #FFFFFF;
+  --long-alternative-transition: all 1.6s cubic-bezier(.23,1,.32,1);
+  --base-alternative-transition: all 1s cubic-bezier(.23,1,.32,1);
+  --medium-alternative-transition: all 0.8s cubic-bezier(.23,1,.32,1);
+  --fast-alternative-transition: all 0.4s cubic-bezier(.23,1,.32,1);
+  --long-transition: all 1.6s cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  --base-transition: all 1s cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  --medium-transition: all 0.8s cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  --fast-transition: all 0.4s cubic-bezier(0.165, 0.840, 0.440, 1.000);
+}
+
+  html {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+
+  html::-webkit-scrollbar {
+    @apply relative z-10;
+    width: 5px;
+    height: 1px;
+  }
+
+  html::-webkit-scrollbar-track {
+    @apply bg-dark;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    @apply bg-dark;
+  }
+
+  *,
+  ::before,
+  ::after,
+  a,
+  button {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+body {
+  @apply
+    text-dark
+    text-paragraph
+    select-none
+    bg-light
+    font-texta;
+
+  height: 100vh;
+}
+
+img, svg {
+  pointer-events: none;
+}
+
+a:focus,
+button:focus {
+  /* @apply outline-dark; */
+  border: none;
+  outline: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: all 5000s ease-in-out 0s;
+  transition-property: color, background-color;
+}
+
+.lazyLoad {
+  @apply opacity-0;
+
+  transition: var(--medium-transition);
+}
+
+.loaded {
+  @apply opacity-100;
+}
+
+.transitioned {
+  transition: var(--medium-transition);
+}
+
+[data-component] {
+  &.fixed {
+    @apply fixed
+      w-full
+      top-[95vh]
+      left-0;
+  }
+}
+
+/* a {
+  transition: var(--medium-transition);
+
+  &:hover {
+    @apply opacity-60;
+  }
+} */

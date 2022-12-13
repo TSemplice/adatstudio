@@ -1,0 +1,92 @@
+<template>
+  <section
+    :class="$style.news"
+  >
+    <div
+      :class="$style.content"
+    >
+      <div
+        v-if="data.title"
+        :class="$style.title"
+        data-scroll
+        data-scroll-call="newsTitle"
+      >
+        <h2>{{ data.title }}</h2>
+      </div>
+      <ul
+        :class="$style.list"
+        v-if="data.news && data.news.length"
+      >
+        <NewsCard
+          v-for="news in data.news"
+          :key="news._key"
+          :data="news"
+        />
+      </ul>
+      <UnderlineCta v-if="data.cta">
+        <SanityCta  v-bind="data.cta"/>
+      </UnderlineCta>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.news {
+  @apply px-[12px];
+}
+
+.content {
+  @apply flex
+    flex-col
+    items-center
+    bg-secondary
+    pt-[48px]
+    px-[20px]
+    pb-[56px]
+    mb-[52px]
+    lg:pt-[72px]
+    lg:pb-[48px]
+    lg:px-[24px]
+    lg:mb-[36px];
+
+  border-radius: 24px;
+}
+
+.title {
+  @apply w-full
+    text-center
+    py-[24px];
+
+  border-bottom: 1px solid var(--color-primary-light);
+
+  & h2 {
+    font-size: 32px;
+    line-height: 40px;
+
+    @apply font-heading
+      lg:text-headline02;
+  }
+}
+
+.list {
+  @apply w-full
+    flex
+    flex-col
+    gap-y-[36px]
+    pt-[36px]
+    pb-[46px]
+    lg:pb-[60px]
+    lg:px-[92px];
+}
+</style>

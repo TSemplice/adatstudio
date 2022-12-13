@@ -1,0 +1,56 @@
+{
+  "root": true,
+  "project": {
+    "name": "Adat Studio"
+  },
+  "api": {
+    "projectId": "inewcdk5",
+    "dataset": "production"
+  },
+  "plugins": [
+    "@sanity/base",
+    "@sanity/components",
+    "@sanity/default-layout",
+    "@sanity/default-login",
+    "@sanity/desk-tool",
+    "@six-socks-studio/sanity-plugin-intl-input",
+    "@sanity/dashboard",
+    "dashboard-widget-netlify",
+    "media",
+    "tags",
+    "order-documents"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "@sanity/vision"
+      ]
+    }
+  },
+  "parts": [
+    {
+      "implements": "part:@sanity/base/document-actions/resolver",
+      "path": "./resolveDocumentActions.js"
+    },
+    {
+      "name": "part:@sanity/base/schema",
+      "path": "./schemas/schema"
+    },
+    {
+      "name": "part:@sanity/desk-tool/structure",
+      "path": "./deskStructure.js"
+    },
+    {
+      "implements": "part:@sanity/base/theme/variables/override-style",
+      "path": "./variables.css"
+    },
+    {
+      "implements": "part:@sanity/base/brand-logo",
+      "path": "./logo/logo.js"
+    },
+    {
+      "implements": "part:@sanity/dashboard/config",
+      "path": "./dashboardConfig.js"
+    }
+  ]
+}

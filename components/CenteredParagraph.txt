@@ -1,0 +1,52 @@
+<template>
+  <section
+    :class="$style.paragraph"
+  >
+    <SanityContent
+      data-scroll
+      data-scroll-call="text"
+      v-if="data && data.content"
+      :blocks="data.content"
+    />
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.paragraph {
+  @apply flex
+    justify-center
+    p-[24px]
+    lg:px-0
+    lg:py-[80px];
+
+  & > div {
+    & p {
+      font-size: 16px;
+      line-height: 20px;
+
+      @apply w-full
+        max-w-[800px]
+        font-body
+        font-bold
+        lg:text-paragraph;
+
+      letter-spacing: 0.1em;
+    }
+
+    & p:empty {
+      @apply pb-[40px];
+    }
+  }
+}
+</style>

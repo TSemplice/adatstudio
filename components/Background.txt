@@ -1,0 +1,26 @@
+<template>
+  <div :class="$style.background" lazy-background="/patter_madeleine.png">
+    <!-- <img src="/background.png" alt="Background Pattern" /> -->
+  </div>
+</template>
+
+<style module lang="postcss">
+.background {
+  @apply fixed
+    top-0
+    left-0
+    w-full
+    h-screen
+    pointer-events-none
+    z-behind
+    opacity-20;
+
+  /* & img {
+    @apply w-full
+      h-full
+      object-cover
+      opacity-20;
+  } */
+  background-size: contain;
+}
+</style>

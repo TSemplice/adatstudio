@@ -1,0 +1,73 @@
+<template>
+  <section
+    :class="$style.titleCompo"
+    data-scroll
+    data-scroll-call="titleSubtitle"
+  >
+    <p
+      v-if="data.smallTitle"
+      :class="$style.smallTitle"
+    >
+      {{ data.smallTitle}}
+    </p>
+    <SanityContent
+      :class="$style.mainTitle"
+      v-if="data.mainTitle"
+      :blocks="data.mainTitle"
+    />
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.titleCompo {
+  @apply flex
+    flex-col
+    items-center
+    text-center
+    px-[16px]
+    py-[52px]
+    max-w-[720px]
+    mx-auto
+    lg:py-[48px];
+}
+
+.smallTitle {
+  font-size: 28px;
+  line-height: 32px;
+
+  @apply text-headline05
+    text-accent
+    mb-[24px]
+    font-heading
+    lg:font-heading;
+
+  letter-spacing: 0.02em;
+}
+
+.mainTitle {
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6,
+  & p {
+    font-size: 48px;
+    line-height: 48px;
+
+    @apply font-heading
+    lg:text-headline03;
+  }
+}
+</style>

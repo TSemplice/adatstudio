@@ -1,0 +1,89 @@
+<template>
+  <div :class="$style.video" data-scroll data-scroll-call="fade">
+    <div
+      ref="player"
+      v-if="data.url"
+    >
+      <iframe
+        :src="data.url"
+        allowfullscreen
+        allowtransparency
+        allow="autoplay"
+      ></iframe>
+    </div>
+  </div>
+</template>
+
+<script>
+import Plyr from 'plyr'
+import 'plyr/dist/plyr.css'
+
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      plyr: null
+    }
+  },
+
+  mounted() {
+    this.plyr = new Plyr(this.$refs.player)
+  }
+}
+</script>
+
+<style module lang="postcss">
+.video {
+  @apply w-full
+    md:w-[80%]
+    mx-auto
+    py-[32px]
+    md:py-[64px]
+    px-[16px]
+    md:px-0;
+
+  :global(.plyr__control--overlaid) {
+    @apply p-6
+      md:p-8;
+
+    background: var(--color-accent);
+    transition: var(--medium-transition);
+
+    & > svg {
+      @apply w-[14px]
+        h-[14px]
+        sm:w-[24px]
+        sm:h-[24px];
+
+      fill: var(--color-light);
+      transition: var(--medium-transition);
+    }
+  }
+
+  :global(.plyr--video .plyr__control--overlaid):hover {
+    background: var(--color-secondary);
+
+    & > svg {
+      fill: var(--color-light);
+    }
+  }
+
+  :global(.plyr--video .plyr__control):hover {
+    background: var(--color-secondary);
+  }
+
+  :global(.plyr--full-ui input[type=range]) {
+    color: var(--color-accent);
+  }
+
+  :global(.plyr.plyr--stopped .plyr__controls) {
+    display: none;
+  }
+}
+</style>

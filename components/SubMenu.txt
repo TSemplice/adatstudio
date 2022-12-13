@@ -1,0 +1,220 @@
+<template>
+  <transition
+    @enter="subIn"
+    @leave="subOut"
+  >
+    <aside
+      v-show="activeSub.length && activeSub === nav.key || !isMenu"
+      :class="[
+        $style.nav,
+        {
+          [$style.menu]: isMenu
+        }
+      ]"
+      @mousemove="handleMouseMove"
+    >
+      <ul>
+        <li
+          v-for="item in nav.items"
+          :key="item._key"
+        >
+          <SanityLazyImage
+            v-if="item.cta.internal.image"
+            v-bind="item.cta.internal.image"
+            :transformations="{
+              auto: 'format',
+              fit: 'max',
+              w: '300',
+              h: '300',
+              q: '80'
+            }"
+          />
+          <LinedTitle>
+            <SanityCta
+              v-if="item.cta"
+              v-bind="item.cta"
+            />
+            <nuxt-link
+              v-else
+              :to="localePath(`/menu/${item.slug.current}`)"
+            >
+              <p>{{ item.translations[$i18n.locale].title }}</p> <span data-additional>menu</span>
+            </nuxt-link>
+          </LinedTitle>
+        </li>
+      </ul>
+    </aside>
+  </transition>
+</template>
+
+<script>
+import animations from '~/assets/js/animations/index'
+
+export default {
+  props: {
+    nav: {
+      type: Object,
+      required: true
+    },
+
+    activeSub: {
+      type: String,
+      default: ''
+    },
+
+    isMenu: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  data() {
+    return {
+      scroll: null
+    }
+  },
+
+  mounted() {
+    document.documentElement.style.setProperty('--menu-x', `0px`)
+  },
+
+  methods: {
+    subIn(el, done) {
+      done()
+    },
+
+    subOut(el, done) {
+      done()
+    },
+
+    handleMouseMove(e) {
+      const { clientX } = e
+      document.documentElement.style.setProperty('--menu-x', `${clientX - (window.innerWidth / 2)}px`)
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.nav {
+  @apply w-full
+    h-full
+    z-behind;
+
+  & > ul {
+    @apply flex
+      flex-col
+      justify-center
+      h-full
+      mb-[36px]
+      px-[12px]
+      lg:px-[120px];
+
+    & > li {
+      @apply w-full
+        flex
+        justify-center
+        items-center
+        py-[52px];
+
+        :global(.no-touchevents) &:hover {
+        & img {
+          transform: translate3D(var(--menu-x), 0, 0) scale(1);
+        }
+
+        & > div {
+          & > span {
+            @apply bg-accent;
+
+            transform: scaleX(0.8);
+          }
+
+          & a {
+            @apply text-accent;
+
+            transform: scale(1.04);
+          }
+        }
+      }
+
+      & > div {
+        & a {
+          transition: var(--medium-transition);
+        }
+
+        & > span {
+          transform-origin: left center;
+        }
+
+        & > span:last-of-type {
+          transform-origin: right center;
+        }
+      }
+
+      & img {
+        @apply absolute
+          w-[300px]
+          h-[200px]
+          object-cover
+          z-behind
+          hidden
+          lg:block;
+
+        border-radius: 24px;
+        transition: var(--fast-transition);
+        transform: translate3D(var(--menu-x), 0, 0) scale(0);
+      }
+    }
+  }
+
+  &.menu {
+    @apply fixed
+    top-0
+    left-0
+    mb-0
+    h-screen
+    bg-primary
+    z-behind;
+
+    & ul {
+      @apply pt-[var(--header-h)];
+
+      & > li {
+        @apply py-[30px];
+      }
+    }
+  }
+
+  & a {
+    font-size: 32px;
+    line-height: 40px;
+
+    @apply flex
+      flex-col
+      items-center
+      font-heading
+      uppercase
+      px-[24px]
+      lg:flex-row
+      lg:text-headline03
+      lg:gap-x-[24px];
+
+    @screen lg {
+      line-height: 110px;
+    }
+
+    & > span {
+      font-size: 44px;
+      line-height: 48px;
+
+      @apply font-heading
+        capitalize
+        lg:text-headline01;
+    }
+
+    & p {
+      @apply inline-block;
+    }
+  }
+}
+</style>

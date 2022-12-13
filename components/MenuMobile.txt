@@ -1,0 +1,276 @@
+<template>
+  <transition
+    @enter="menuIn"
+    @leave="menuOut"
+  >
+    <aside
+      :class="$style.menu"
+      v-show="$store.state.menu.isOpen"
+      v-modal="{ open: $store.state.menu.isOpen }"
+      ref="menu"
+    >
+      <div>
+        <div v-if="!$fetchState.pending && other" :class="$style.content">
+          <div>
+            <nuxt-link
+              :to="localePath('/')"
+              data-item
+            >
+              <Logo />
+            </nuxt-link>
+            <ul :class="$style.menuItems">
+              <li
+                v-for="item in items"
+                :key="item._key"
+                data-item
+              >
+                <LinedTitle>
+                  <SanityCta
+                    v-if="item.cta"
+                    v-bind="item.cta"
+                  />
+                </LinedTitle>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <ul :class="$style.utility">
+              <a data-item v-if="other.privacy" :href="other.privacy" target="_blank">Privacy</a>
+              <a data-item v-if="other.cookies" :href="other.cookies" target="_blank">Cookies</a>
+              <a data-item v-if="other.terms" :href="other.terms" target="_blank">{{ $t('terms') }}</a>
+              <a data-item href="https://www.semplice.is" target="_blank">{{ $t('credits') }}</a>
+            </ul>
+            <div :class="$style.social">
+              <h4 data-item>
+                {{ $t('follow_us') }}
+              </h4>
+              <div>
+                <a data-item v-if="other.instagram" :href="other.instagram" target="_blank">
+                  ig
+                </a>
+                <a data-item v-if="other.facebook" :href="other.facebook" target="_blank">
+                  fb
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </transition>
+</template>
+
+<script>
+import { groq } from '@nuxtjs/sanity'
+import gsap, { Power4 } from 'gsap'
+import { qs, qsa } from '~/assets/js/utils/generic'
+
+export default {
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    }
+  },
+
+  data() {
+    return {
+      other: null
+    }
+  },
+
+  async fetch() {
+    const query = groq`(*[_type == "settings"])[0] {
+      translations {
+        ${this.$i18n.locale} {
+          ...
+        }
+      }
+    }`
+
+    const other = await this.$sanity.fetch(query)
+
+    this.other = other.translations[this.$i18n.locale].footer
+  },
+
+  mounted() {
+    if (this.$preview && this.$preview.isPreview) {
+      this.$fetch()
+    }
+  },
+
+  methods: {
+    menuIn(el, done) {
+      const tl = gsap.timeline({ onComplete: done })
+      const mainContent = qs('[data-main-content]')
+      const mainLogo = qs('[data-main-logo]')
+      const { menu } = this.$refs
+      const items = qsa('[data-item]')
+
+      tl
+        .add('start')
+        .to(mainLogo, {
+          duration: 0.4,
+          autoAlpha: 0,
+          ease: Power4.easeOut,
+          onComplete: () => {
+            mainLogo.style.width = '0px'
+          }
+        }, 'start')
+        .to(mainContent, {
+          duration: 1.2,
+          width: 108,
+          ease: Power4.easeOut
+        }, 'start+=0.2')
+        .fromTo(menu, {
+          scaleY: 0,
+        }, {
+          duration: 1.2,
+          scaleY: 1,
+          transformOrigin: 'center bottom',
+          ease: Power4.easeOut
+        }, 'start+=1')
+        .fromTo(items, {
+          autoAlpha: 0,
+          y: 16
+        }, {
+          duration: 1.2,
+          autoAlpha: 1,
+          y: 0,
+          stagger: 0.06,
+          ease: Power4.easeOut
+        }, 'start+=1.6')
+    },
+
+    menuOut(el, done) {
+      const tl = gsap.timeline({ onComplete: done })
+      const mainContent = qs('[data-main-content]')
+      const mainLogo = qs('[data-main-logo]')
+      const items = qsa('[data-item]')
+
+      const { menu } = this.$refs
+
+      tl
+      .add('start')
+      .to(items, {
+          duration: 0.8,
+          autoAlpha: 0,
+          y: -16,
+          stagger: 0.04,
+          ease: Power4.easeOut
+      }, 'start')
+      .to(menu, {
+        duration: 1.2,
+        scaleY: 0,
+        transformOrigin: 'center top',
+        ease: Power4.easeOut
+      }, 'start+=0.6')
+      .to(mainContent, {
+        duration: 1.2,
+        width: '100%',
+        ease: Power4.easeOut
+      }, 'start+=1')
+      .set(mainLogo, { width:  100}, 'start+=1.6')
+      .to(mainLogo, {
+        duration: 0.8,
+        autoAlpha: 1,
+        ease: Power4.easeOut
+      }, 'start+=1.6')
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.menu {
+  @apply fixed
+    top-0
+    left-0
+    w-full
+    h-full
+    bg-secondary
+    px-[24px]
+    overflow-auto
+    lg:hidden
+    z-behind;
+
+    & svg {
+      @apply w-[204px]
+        mx-auto
+        mb-[60px];
+    }
+}
+
+.menuItems {
+  @apply flex
+    flex-col
+    gap-y-[64px];
+
+  & a {
+    @apply font-heading
+      px-[8px];
+
+    font-size: 32px;
+    line-height: 40px;
+
+    &:global(.nuxt-link-exact-active) {
+      @apply text-accent;
+    }
+  }
+}
+
+.utility {
+  @apply flex
+    flex-col
+    gap-y-[8px]
+    mt-[52px];
+
+    & a {
+      @apply font-body
+        font-medium
+        text-accent
+        capitalize;
+
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.06em;
+  }
+}
+
+.social {
+  @apply mt-[72px];
+
+  & h4 {
+    @apply font-heading
+      mb-[16px];
+
+    font-size: 18px;
+    line-height: 13px;
+  }
+
+  & > div {
+    @apply flex
+      gap-x-[24px];
+
+    & > a {
+      @apply block
+        font-heading
+        font-medium
+        uppercase
+        text-accent;
+
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: 0.06em;
+    }
+  }
+}
+
+.content {
+  @apply h-full
+    flex
+    flex-col
+    justify-between
+    py-[48px];
+}
+</style>

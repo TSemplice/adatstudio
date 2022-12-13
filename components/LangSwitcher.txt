@@ -1,0 +1,52 @@
+<template>
+  <div :class="$style.switcher" data-item>
+    <a
+      :class="[
+        {
+          [$style.active]: $i18n.locale === $i18n.locales[0].code
+        }
+      ]"
+      :href="switchLocalePath($i18n.locales[0].code )"
+    >
+      {{ $i18n.locales[0].code }}
+    </a>
+    <p>|</p>
+    <a
+      :class="[
+        {
+          [$style.active]: $i18n.locale === $i18n.locales[1].code
+        }
+      ]"
+      :href="switchLocalePath($i18n.locales[1].code )"
+    >
+      {{ $i18n.locales[1].code }}
+    </a>
+  </div>
+</template>
+
+<script>
+export default {
+}
+</script>
+
+<style module lang="postcss">
+.switcher {
+  @apply flex
+    items-center
+    justify-end
+    ml-[64px];
+
+  & > a {
+    @apply text-label
+    font-normal
+    uppercase;
+
+    letter-spacing: 2px;
+
+    &.active {
+      @apply opacity-60
+        pointer-events-none;
+    }
+  }
+}
+</style>

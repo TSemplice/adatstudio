@@ -1,0 +1,68 @@
+<template>
+  <section :class="$style.hours">
+    <h2 v-if="data.title">{{ data.title }}</h2>
+    <ul v-if="data.items && data.items.length">
+      <li
+        v-for="item in data.items"
+        :key="item._key"
+      >
+        <h3 v-if="item.day">{{ item.day }}</h3>
+        <p v-if="item.range">{{ item.range }}</p>
+      </li>
+    </ul>
+  </section>
+</template>
+
+<style module lang="postcss">
+.hours {
+  @apply flex
+    flex-col
+    items-center
+    text-center
+    py-[64px];
+
+  & h2 {
+    @apply font-heading
+      text-headline02
+      text-accent
+      mb-[24px];
+  }
+
+  & > ul {
+    & > li {
+      @apply mb-[30px];
+
+      & > h3 {
+        @apply font-body
+          font-semibold
+          text-paragraph;
+
+        letter-spacing: 0.06em;
+      }
+
+      & p {
+        @apply font-body
+          font-medium
+          text-paragraph;
+
+        letter-spacing: 0.06em;
+      }
+    }
+
+    & > li:last-of-type {
+      @apply mb-0;
+    }
+  }
+}
+</style>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>

@@ -1,0 +1,81 @@
+<template>
+  <section :class="[
+      $style.menuGallery,
+      {
+        [$style.backgrounded]: data.backgrounded
+      }
+    ]"
+    data-scroll
+    data-scroll-call="menuGallery"
+  >
+    <p v-if="data.smallTitle">{{ data.smallTitle }}</p>
+    <h1 v-if="data.mainTitle">{{ data.mainTitle }}</h1>
+    <MenuGalleryItems
+      v-if="data.menus && data.menus.length"
+      :items="data.menus"
+      :backgrounded="data.backgrounded"
+      :ratio="data.ratio"
+    />
+  </section>
+</template>
+
+<script>
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.menuGallery {
+  @apply flex
+    flex-col
+    items-center
+    py-[36px]
+    lg:py-[52px];
+
+  & > p {
+    font-size: 28px;
+    line-height: 32px;
+
+    @apply text-secondary
+      font-heading
+      mb-[4px]
+      lg:text-headline05
+      lg:mb-[24px];
+
+    letter-spacing: 0.02em;
+  }
+
+  & > h1 {
+    font-size: 32px;
+    line-height: 40px;
+
+    @apply w-full
+      text-accent
+      text-center
+      font-heading
+      px-[12px]
+      lg:text-headline03;
+
+    max-width: 966px;
+  }
+
+  &.backgrounded {
+    @apply bg-secondary
+      mb-[24px];
+
+    & h1 {
+      @apply text-accent;
+    }
+
+    & p {
+      @apply text-light;
+    }
+  }
+}
+</style>

@@ -1,0 +1,28 @@
+<template>
+  <aside :class="$style.menu">
+    <!-- <ul>
+      <li
+        v-for="item in items"
+        :key="item._key"
+        data-item
+      >
+        <SanityCta v-bind="item.cta" />
+      </li>
+    </ul>
+    <LangSwitcher /> -->
+  </aside>
+</template>
+
+<script>
+export default {
+  props: {
+    items: {
+      type: Array,
+      default: () => ([])
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+</style>

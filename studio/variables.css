@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Texta';
+  src: url('/static/Texta-Regular.woff2') format('woff2'),
+      url('/static/Texta-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  letter-spacing: 0.5px;
+}
+
+:root {
+  /* Brand colors */
+  --brand-primary: #1E1E1E;
+  --brand-primary--inverted: #ffffff;
+
+  /* Font */
+  --font-size-base: 13px;
+  --font-family-base: 'Texta', sans-serif;
+
+  /* Navbar */
+  --main-navigation-color: var(--brand-primary);
+  --main-navigation-color--inverted: var(--brand-primary--inverted);
+
+   /* Selectable item */
+   --selectable-item-color-hover: var(--brand-primary);
+   --selectable-item-color-focus: var(--brand-primary);
+   --selectable-item-color-active: var(--brand-primary);
+   --selectable-item-color-highlighted: var(--brand-primary);
+
+   /* Timeline event */
+   --timeline-event-enabled-icon-edited-bg: var(--brand-primary);
+
+  /* success */
+  --state-success-color: var(--brand-primary);
+  --state-success-color--faded: color(var(--state-success-color) lightness(+10%));
+}
+
+[data-ui="Badge"] {
+  background-color: var(--brand-primary);
+  box-shadow: inset 0 0 0 1px var(--brand-primary);
+}

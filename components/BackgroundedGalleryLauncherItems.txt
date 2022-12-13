@@ -1,0 +1,571 @@
+<template>
+  <div :class="$style.main"
+    v-viewport.initial="{ handleResize }"
+    data-scroll
+    data-scroll-call="gallery"
+  >
+    <span
+      :class="[
+        $style.helper,
+        {
+          [$style.visible]: visible
+        }
+      ]"
+      :style="{ transform: `translate3d(${x}px, ${y}px, 0)` }"
+    >
+      <p
+        :class="[
+          {
+            [$style.prev]: type === 'prev',
+            [$style.next]: type === 'next'
+          }
+        ]"
+      />
+    </span>
+    <div :class="[
+        $style.gallery,
+        $style[ratio]
+      ]"
+      ref="gallery"
+      @mousemove="handleMouseMove"
+    >
+      <div
+        ref="cards"
+        v-for="(item, ix) in items"
+        :key="item._key"
+        :class="[
+          $style[ratio],
+          {
+            [$style.active]: ix === index
+          }
+        ]"
+        data-card
+      >
+        <InsetRoundedBorderImage
+          :image="item"
+          dark
+        />
+      </div>
+      <button aria-label="Prev" @mouseover="handleMouseOver('prev')" @mouseout="handleMouseOut" @click="setIndex(-1)" />
+      <button aria-label="Next" @mouseover="handleMouseOver('next')" @mouseout="handleMouseOut" @click="setIndex(1)" />
+    </div>
+    <div
+      :class="$style.controls"
+    >
+      <button
+        aria-label="prev"
+        @click="setIndex(-1)"
+      >
+        <LeftArrowSvg />
+      </button>
+      <div
+        :class="$style.counter"
+      >
+      <span>
+        <span
+          v-for="(item, ix) in items"
+          :key="ix"
+          ref="numbers"
+        >
+          {{ ix + 1 }}
+        </span>
+      </span>
+      <span>-</span>
+      <span>{{ items.length }}</span>
+      </div>
+      <button
+        aria-label="next"
+      @click="setIndex(1)"
+      >
+        <RightArrowSvg />
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+import gsap, { Power4 } from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+import { qs, qsa } from '~/assets/js/utils/generic'
+
+let Hammer
+
+if (process.client) {
+  Hammer = require('hammerjs')
+  gsap.registerPlugin(SplitText)
+}
+
+export default {
+  props: {
+    items: {
+        type: Array,
+        default: () => []
+    },
+
+    ratio: {
+      type: String,
+      default: 'squared'
+    }
+  },
+
+  data() {
+      return {
+          index: 0,
+          width: 0,
+          amount: 0,
+          animating: false,
+          x: 0,
+          y: 0,
+          visible: false,
+          type: ''
+      };
+  },
+
+  computed: {
+    nextItem() {
+      return this.index === this.items.length - 1 ? 0 : this.index + 1
+    },
+
+    prevItem() {
+      return this.index === 0 ? this.items.length - 1 : this.index - 1
+    }
+  },
+
+  mounted() {
+    const hm = new Hammer(this.$refs.gallery)
+
+    hm.on('swipeleft', () => {
+      this.setIndex(1)
+    })
+
+    hm.on('swiperight', () => {
+      this.setIndex(-1)
+    })
+
+    const { numbers } = this.$refs
+
+    gsap.set(numbers, {
+      yPercent: 100,
+    })
+
+    gsap.set(numbers[0], {
+      yPercent: 0,
+    })
+
+    this.handleResize()
+  },
+
+  methods: {
+    handleMouseMove(e) {
+      const { top } = e.target.getBoundingClientRect()
+      const { clientX, clientY } = e
+      this.x = clientX + 20
+      this.y = (clientY - top) + 20
+    },
+
+    handleMouseOver(e) {
+      this.type = e
+
+      if (!this.visible) {
+        this.visible = true
+      }
+    },
+
+    handleMouseOut() {
+      this.type = ''
+
+      if (this.visible) {
+        this.visible = false
+      }
+    },
+
+    numberIn(el, done) {
+      gsap.from(el, {
+        duration: 0.6,
+        yPercent: 100,
+        ease: Power4.easeOut,
+        onComplete: done
+      })
+    },
+
+    numberOut(el, done) {
+      gsap.to(el, {
+        duration: 0.6,
+        yPercent: -100,
+        ease: Power4.easeOut,
+        onComplete: done
+      })
+    },
+
+    handleResize() {
+      const mobile = window.innerWidth < 1024
+
+      this.width = window.innerWidth * (mobile ? 75 : 40) / 100
+      this.amount = (this.width) - (mobile ? 16 : 36)
+
+      this.setInitial()
+    },
+
+    setInitial() {
+      const { cards } = this.$refs
+
+      cards.forEach(card => {
+        gsap.set(card, {
+          x: -(this.amount * 2),
+          scale: 0.8
+        })
+      })
+
+      gsap.set(cards[this.prevItem], {
+        x: -this.amount,
+      })
+
+      gsap.set(cards[this.nextItem], {
+        x: this.amount
+      })
+
+      gsap.set(cards[this.index], {
+        x: 0,
+        scale: 1
+      })
+    },
+
+    setIndex(direction) {
+      if (this.animating) return
+
+      this.animateCards(direction)
+    },
+
+    animateCards(direction) {
+      this.animating = true
+      const { cards, numbers } = this.$refs
+      const nextItem = this.nextItem
+      const index = this.index
+      const prevItem = this.prevItem
+
+      this.index = direction === -1 ? (this.index === 0 ? this.items.length - 1 : this.index - 1) : (this.index === this.items.length - 1 ? 0 : this.index + 1)
+      const tl = gsap.timeline({ onComplete: () => { this.animating = false } })
+
+      if (direction === -1) {
+        const newPrev = prevItem === 0 ? this.items.length - 1 : prevItem - 1
+
+        tl
+          .add('start')
+          .to(cards[nextItem], {
+            duration: 1.4,
+            x: this.amount * 2,
+            ease: Power4.easeOut
+          }, 'start')
+          .to(cards[index], {
+            duration: 1.4,
+            x: this.amount,
+            scale: 0.8,
+            ease: Power4.easeOut
+          }, 'start')
+          .to(cards[prevItem], {
+            duration: 1.4,
+            x: 0,
+            scale: 1,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(cards[newPrev], {
+            x: -this.amount * 2
+          }, {
+            duration: 1.4,
+            x: -this.amount,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(numbers[prevItem], {
+            yPercent: -100
+          }, {
+            duration: 1.2,
+            yPercent: 0,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(numbers[index], {
+            yPercent: 0
+          }, {
+            duration: 1.2,
+            yPercent: 100,
+            ease: Power4.easeOut
+          }, 'start')
+      } else {
+        const newNext = nextItem === this.items.length - 1 ? 0 : nextItem + 1
+
+        tl
+          .add('start')
+          .to(cards[prevItem], {
+            duration: 1.4,
+            x: -(this.amount * 2),
+            ease: Power4.easeOut
+          }, 'start')
+          .to(cards[index], {
+            duration: 1.4,
+            x: -this.amount,
+            scale: 0.8,
+            ease: Power4.easeOut
+          }, 'start')
+          .to(cards[nextItem], {
+            duration: 1.4,
+            x: 0,
+            scale: 1,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(cards[newNext], {
+            x: this.amount * 2
+          }, {
+            duration: 1.4,
+            x: this.amount,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(numbers[nextItem], {
+            yPercent: 100
+          }, {
+            duration: 1.2,
+            yPercent: 0,
+            ease: Power4.easeOut
+          }, 'start')
+          .fromTo(numbers[index], {
+            yPercent: 0
+          }, {
+            duration: 1.2,
+            yPercent: -100,
+            ease: Power4.easeOut
+          }, 'start')
+      }
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.main {
+  @apply relative
+    lg:mt-[76px]
+    mb-[12px]
+    lg:mb-[48px];
+}
+.main,
+.gallery {
+  @apply w-full;
+}
+.gallery {
+  @apply flex
+    justify-center
+    relative
+    h-[75vw]
+    lg:h-[40vw]
+    mb-[36px];
+
+  cursor: grab;
+
+    &.squared {
+    @apply h-[75vw]
+      lg:h-[40vw];
+  }
+
+  &.vertical {
+    @apply h-[96vw]
+      lg:h-[51.2vw];
+  }
+
+  &.horizontal {
+    @apply h-[57.1875vw]
+      lg:h-[30.5vw];
+  }
+
+  & > div {
+    @apply block
+      absolute
+      w-[75vw]
+      lg:w-[40vw]
+      pointer-events-none;
+
+    flex: 0 0 auto;
+
+    transform-origin: center center;
+    transform: scale(0.8);
+
+    &.active {
+      pointer-events: all;
+    }
+
+    &.squared {
+      & > div {
+        padding-bottom: 100%;
+      }
+    }
+
+    &.vertical {
+      & > div {
+        padding-bottom: 128%;
+      }
+    }
+
+    &.horizontal {
+      & > div {
+        padding-bottom: 76.25%;
+      }
+    }
+  }
+
+  & > div:first-of-type {
+    transform: scale(1);
+  }
+
+  & > button {
+    @apply absolute
+      top-0
+      left-0
+      h-full;
+
+    width: calc(30vw - 32px);
+  }
+
+  & > button:last-of-type {
+    @apply left-auto
+      right-0;
+  }
+}
+.text {
+  @apply flex
+    flex-col
+    items-center
+    text-center;
+
+  & h2 {
+    @apply font-heading
+      text-headline02
+      text-light
+      mb-[16px];
+  }
+
+  & p {
+    @apply font-body
+      font-medium
+      text-paragraph;
+
+    letter-spacing: 0.06em;
+  }
+
+  & > div {
+    @apply mb-[60px];
+  }
+}
+
+.controls {
+  @apply flex
+    justify-between
+    items-center
+    overflow-hidden
+    lg:px-[108px];
+
+  & > button {
+    transition: var(--medium-transition);
+
+    :global(.no-touchevents) &:hover {
+      &:first-of-type {
+        transform: translate3D(-8px, 0, 0) skewX(8deg);
+      }
+
+      &:last-of-type {
+        transform: translate3D(8px, 0, 0) skewX(-8deg);
+      }
+    }
+  }
+}
+
+.counter {
+  @apply flex;
+
+  & > span {
+    font-size: 30px;
+    line-height: 44px;
+
+    @apply relative
+      font-body
+      block
+      font-heading
+      text-light
+      lg:text-paragraph;
+  }
+
+  & > span:nth-of-type(2) {
+    @apply mx-[8px];
+  }
+
+  & > span > span {
+    @apply block
+      text-right
+      absolute
+      top-0
+      right-0;
+  }
+
+  & > span > span:first-of-type {
+    @apply relative;
+  }
+}
+
+.helper {
+  @apply font-heading
+    text-light
+    absolute
+    top-0
+    left-0
+    z-1
+    opacity-0
+    overflow-hidden
+    text-paragraph
+    uppercase;
+
+  transition: var(--medium-transition);
+  letter-spacing: 0.02em;
+
+  &.visible {
+    @apply lg:opacity-100;
+  }
+
+  & p {
+    @apply h-[30px]
+      w-[80px]
+      relative;
+
+    &::before {
+      @apply absolute
+        top-0
+        left-0;
+
+      content: 'prev';
+      transform: translate3d(0, 130%, 0);
+      transition: var(--medium-transition);
+    }
+
+    &::after {
+      @apply absolute
+        top-0
+        left-0;
+
+      content: 'next';
+      transform: translate3d(0, 130%, 0);
+      transition: var(--medium-transition);
+    }
+
+    &.prev {
+      &::before {
+        @screen lg {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+    }
+
+    &.next {
+      &::after {
+        @screen lg {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+    }
+  }
+}
+</style>

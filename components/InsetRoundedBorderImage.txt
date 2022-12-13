@@ -1,0 +1,192 @@
+<template>
+  <div :class="[
+    $style.container,
+    {
+      [$style.dark]: dark,
+      [$style.light]: light,
+      [$style.hoverable]: hoverable,
+      [$style.disabled]: disabled
+    }
+  ]">
+    <div :class="$style.layer">
+      <div>
+        <SanityLazyImage
+          v-bind="image"
+          :lazy="true"
+          :transformations="transformations"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    image: {
+      type: Object,
+      required: true
+    },
+
+    dark: {
+      type: Boolean,
+      default: false
+    },
+
+    light: {
+      type: Boolean,
+      default: false
+    },
+
+    hoverable: {
+      type: Boolean,
+      deafult: false
+    },
+
+    disabled: {
+      type: Boolean,
+      deafult: false
+    }
+  },
+
+  computed: {
+    transformations() {
+      if (process.client) {
+        return {
+          auto: 'format',
+          fit: 'max',
+          w: `${window.innerWidth < 1024 ? '500' : '1200'}`,
+          h: `${window.innerWidth < 1024 ? '500' : '1200'}`,
+          q: '80'
+        }
+      } else {
+        return {
+          auto: 'format',
+          fit: 'max',
+          w: `1200`,
+          h: `1200`,
+          q: '80'
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.container {
+  @apply relative
+    w-full;
+
+  &.dark {
+    .layer {
+      &::before {
+        @apply bg-secondary;
+      }
+    }
+  }
+
+  &.light {
+    .layer {
+      &::before {
+        @apply bg-light;
+      }
+    }
+  }
+
+  &.hoverable {
+    /* :global(.no-touchevents) &:hover {
+      .layer {
+        &::before,
+        & img {
+          mask:
+          radial-gradient(24px at 0    0   , #0000 98%,#000) 0    0   /100% 100% no-repeat,
+          radial-gradient(24px at 100% 0   , #0000 98%,#000) 100% 0   /100% 100% no-repeat,
+          radial-gradient(24px at 0    100%, #0000 98%,#000) 0    100%/100% 100% no-repeat,
+          radial-gradient(24px at 100% 100%, #0000 98%,#000) 100% 100%/100% 100% no-repeat;
+        }
+      }
+    } */
+  }
+}
+
+.layer {
+  @apply absolute
+    top-0
+    left-0
+    w-full
+    h-full
+    overflow-hidden;
+
+  /* border-radius: 10px;
+
+  @screen lg {
+    border-radius: 24px;
+  } */
+
+  &::before {
+    /* @apply absolute
+      bg-accent;
+
+    content: '';
+    inset:0; */
+
+    /* mask:
+      radial-gradient(10px at 0    0   , #0000 98%,#000) 0    0   /51% 51% no-repeat,
+      radial-gradient(10px at 100% 0   , #0000 98%,#000) 100% 0   /51% 51% no-repeat,
+      radial-gradient(10px at 0    100%, #0000 98%,#000) 0    100%/51% 51% no-repeat,
+      radial-gradient(10px at 100% 100%, #0000 98%,#000) 100% 100%/51% 51% no-repeat;
+
+    transition: var(--base-transition);
+
+    @screen lg {
+      mask:
+        radial-gradient(24px at 0    0   , #0000 98%,#000) 0    0   /51% 51% no-repeat,
+        radial-gradient(24px at 100% 0   , #0000 98%,#000) 100% 0   /51% 51% no-repeat,
+        radial-gradient(24px at 0    100%, #0000 98%,#000) 0    100%/51% 51% no-repeat,
+        radial-gradient(24px at 100% 100%, #0000 98%,#000) 100% 100%/51% 51% no-repeat;
+    } */
+  }
+}
+
+.layer > div {
+  @apply w-full
+    h-full
+    p-[2px]
+    overflow-hidden;
+
+  border-radius: 10px;
+
+  @screen lg {
+    border-radius: 24px;
+  }
+}
+
+
+.layer > div > img {
+  @apply w-full
+    h-full
+    pointer-events-none;
+
+  border-radius: 10px;
+
+  object-fit: cover;
+  transition: var(--base-transition);
+
+  /* mask:
+    radial-gradient(10px at 0    0   , #0000 98%,#000) 0    0   /51% 51% no-repeat,
+    radial-gradient(10px at 100% 0   , #0000 98%,#000) 100% 0   /51% 51% no-repeat,
+    radial-gradient(10px at 0    100%, #0000 98%,#000) 0    100%/51% 51% no-repeat,
+    radial-gradient(10px at 100% 100%, #0000 98%,#000) 100% 100%/51% 51% no-repeat;
+
+  @screen lg {
+    border-radius: 24px;
+
+    mask:
+    radial-gradient(24px at 0    0   , #0000 98%,#000) 0    0   /51% 51% no-repeat,
+    radial-gradient(24px at 100% 0   , #0000 98%,#000) 100% 0   /51% 51% no-repeat,
+    radial-gradient(24px at 0    100%, #0000 98%,#000) 0    100%/51% 51% no-repeat,
+    radial-gradient(24px at 100% 100%, #0000 98%,#000) 100% 100%/51% 51% no-repeat;
+  } */
+}
+</style>

@@ -1,0 +1,279 @@
+<template>
+  <li
+    :class="$style.item"
+    data-scroll
+    data-scroll-call="newsCard"
+    :data-delay="delay"
+  >
+    <nuxt-link
+      v-if="data._type === 'journal'"
+      :to="localePath(`/journal/${data.slug.current}`)"
+      :aria-label="data.translations[$i18n.locale].title"
+    >
+      <span v-if="journalsPage" :class="$style.date" data-date>{{ textDate }}</span>
+      <div :class="$style.content">
+        <div :class="$style.wrapper">
+          <div :class="$style.background" data-background>
+            <SanityLazyImage
+              v-if="data.image"
+              v-bind="data.image"
+              :transformations="{
+                auto: 'format',
+                fit: 'max',
+                w: '400',
+                h: '400',
+                q: '80'
+              }"
+            />
+          </div>
+        </div>
+        <div :class="$style.text">
+          <h5 v-if="data.translations[$i18n.locale].title">{{ data.translations[$i18n.locale].title }}</h5>
+          <div data-arrow>
+            <RightArrowSvg />
+            <span :class="$style.label">{{ $t('read_more') }}</span>
+          </div>
+        </div>
+      </div>
+    </nuxt-link>
+    <a
+      :href="data.file ? data.file.asset.url : data.url"
+      v-if="data._type === 'press'"
+      rel="noopener"
+      target="_blank"
+      :aria-label="data.translations[$i18n.locale].title"
+    >
+      <span v-if="journalsPage"  :class="$style.date" data-date>{{ textDate }}</span>
+      <div :class="$style.content">
+        <div :class="$style.wrapper">
+          <div :class="$style.background" data-background>
+            <SanityLazyImage
+              v-if="data.image"
+              v-bind="data.image"
+              :transformations="{
+                auto: 'format',
+                fit: 'max',
+                w: '400',
+                h: '400',
+                q: '80'
+              }"
+            />
+          </div>
+        </div>
+        <div :class="$style.text">
+          <h5 v-if="data.translations[$i18n.locale] && data.translations[$i18n.locale].title">{{ data.translations[$i18n.locale].title }}</h5>
+          <div data-arrow>
+            <RightArrowSvg />
+            <span :class="$style.label">{{ $t('read_more') }}</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  </li>
+</template>
+
+<script>
+export default {
+  props: {
+      data: {
+          type: Object,
+          required: true
+      },
+
+      journalsPage: {
+        type: Boolean,
+        default: false
+      },
+
+      delay: {
+        type: Number,
+        default: 0.2
+      }
+  },
+  data() {
+      return {
+          months: {
+              it: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+              en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+          }
+      };
+  },
+  computed: {
+      textDate() {
+          if (this.data) {
+              if (this.journalsPage ? (this.data && this.data.releaseDate) : (this.data.internal && this.data.internal.releaseDate)) {
+                  const { releaseDate } = this.journalsPage ? this.data : this.data.internal
+                  const d = new Date(releaseDate)
+                  const month = this.months[this.$i18n.locale][d.getMonth()]
+                  const year = d.getFullYear()
+                  return `${month} ${year}`
+              }
+              else if (this.data.customNews && this.data.customNews.releaseDate) {
+                  const { releaseDate } = this.data.customNews
+                  const d = new Date(releaseDate)
+                  const month = this.months[this.$i18n.locale][d.getMonth()]
+                  const year = d.getFullYear()
+                  return `${month} ${year}`
+              }
+              else {
+                  return ""
+              }
+          }
+      }
+  }
+}
+</script>
+
+<style module lang="postcss">
+.item {
+  @apply overflow-hidden;
+}
+.content {
+  @apply lg:flex;
+
+  :global(.no-touchevents) &:hover {
+    .label::before {
+      transform: translate3d(0, 0, 0);
+      transition-delay: .16s;
+    }
+
+    .label::after {
+      transform: translate3d(102%, 0, 0);
+      transition-delay: 0s;
+    }
+
+    & img {
+      transform: scale(1.06);
+    }
+
+    & svg {
+      transform: translate3d(4px, 0, 0) skewX(8deg);
+    }
+  }
+}
+
+.date {
+  font-size: 18px;
+  line-height: 22px;
+
+  @apply block
+    font-body
+    mb-[12px]
+    lg:mb-[16px]
+    lg:font-medium
+    lg:text-paragraph;
+
+  letter-spacing: 0.06em;
+}
+
+.wrapper {
+  @apply w-full
+    lg:w-[25%]
+    overflow-hidden;
+}
+
+.background {
+  @apply w-full
+    relative
+    pb-[62.25%]
+    mb-[12px]
+    lg:mb-0
+    overflow-hidden;
+
+  border-radius: 24px;
+
+  & img {
+    @apply absolute
+      top-0
+      left-0
+      w-full
+      h-full
+      object-cover;
+
+    transition: var(--medium-transition);
+  }
+}
+
+.text {
+  @apply w-full
+    flex
+    flex-col
+    justify-between
+    lg:pl-[36px]
+    lg:w-[75%];
+
+  & h5 {
+    font-size: 24px;
+    line-height: 29px;
+
+    @apply font-heading
+      uppercase
+      mb-[14px]
+      lg:mb-[40px]
+      lg:text-headline04;
+
+    letter-spacing: 0.06em;
+
+    @screen lg {
+      letter-spacing: 0.03em;
+    }
+  }
+
+  & span {
+    @apply text-cta
+      font-body
+      font-medium
+      text-accent;
+
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0.06em;
+  }
+
+  & > div {
+    @apply flex
+      items-center;
+  }
+
+  & svg {
+    @apply mr-[16px]
+      /* w-[58px] */
+      w-[40px]
+      h-auto;
+
+    transition: var(--medium-transition);
+
+    & path {
+      stroke: var(--color-secondary-light);
+    }
+  }
+}
+
+.label {
+  @apply relative
+    overflow-hidden
+    pb-[2px];
+
+  &::before,
+  &::after {
+    @apply absolute
+      w-full
+      h-px
+      bottom-0
+      left-0
+      bg-accent;
+
+    content: '';
+    transition: var(--medium-transition);
+  }
+
+  &::after {
+    transition-delay: .16s;
+  }
+
+  &::before {
+    transform: translate3d(-102%, 0, 0);
+    transition-delay: 0s;
+  }
+}
+</style>
