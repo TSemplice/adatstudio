@@ -5,7 +5,9 @@
       {
         [$style.flipped]: flipped
       }
-    ]">
+    ]"
+    @click.prevent="toggleFlip"
+    >
       <div :class="$style.front">
         <div v-if="project.image" :class="$style.background">
           <SanityLazyImage
@@ -21,7 +23,7 @@
         </div>
         <p :class="$style.subtitle" v-if="translations.subtitle">{{ translations.subtitle }}</p>
         <h3 :class="$style.title" v-if="translations.title">{{ translations.title }}</h3>
-        <button @click.prevent="toggleFlip" :class="$style.plus" aria-label="plus">
+        <button :class="$style.plus" aria-label="plus">
           <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
             <path d="M5.526 0.729999H3.438V3.664H0.576V5.752H3.438V8.542H5.526V5.752H8.388V3.664H5.526V0.729999Z" fill="#1E1E1E"/>
           </svg>
@@ -37,7 +39,7 @@
             <p v-if="item.content">{{ item.content }}</p>
           </li>
         </ul>
-        <button @click.prevent="toggleFlip" :class="$style.return" aria-label="return">
+        <button :class="$style.return" aria-label="return">
           <svg width="8" height="9" viewBox="0 0 8 9" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 8.5L0 4.5L4 0.5L4.7125 1.2L1.9125 4H8V5H1.9125L4.7125 7.8L4 8.5Z" fill="white"/>
           </svg>
@@ -133,7 +135,8 @@ export default {
 .inner {
   @apply 
     w-full
-    h-full;
+    h-full
+    cursor-pointer;
 
   transition: var(--long-transition);
   transform-style: preserve-3d;

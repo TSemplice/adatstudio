@@ -137,7 +137,7 @@ export default {
     gap-[10px];
 
   padding-left: calc(((100vw - 72px) - 240px) / 2);
-  transition: var(--medium-transition);
+  transition: var(--long-transition);
 
   @screen lg {
     padding-left: 0;
@@ -177,7 +177,7 @@ export default {
       &.notAutoplay {
         @apply opacity-100;
 
-        transition: var(--medium-transition);
+        transition: var(--long-transition);
       }
     }
 
