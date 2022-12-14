@@ -27,11 +27,12 @@
         <SanityCta v-bind="item.cta" />
       </li>
     </ul>
-      <!-- <Hamburger /> -->
-    <!-- <MenuMobile
+      <Hamburger />
+    <MenuMobile
       v-if="items"
       :items="items"
-    /> -->
+      :settings="nav.settings"
+    />
   </header>
 </template>
 
@@ -57,6 +58,7 @@ export default {
   async fetch() {
     const query = groq`(*[_type == "menu" && slug.current == "header-nav"])[0] {
       ...,
+      "settings": *[_type == "settings"][0],
       translations {
         ${this.$i18n.locale} {
           items[] {
@@ -146,28 +148,28 @@ export default {
   @apply fixed
     flex
     justify-between
+    items-center
+    top-0
     right-0
     w-full
-    px-12
-    z-header
-    bottom-0
-    lg:bottom-auto
-    lg:top-0;
+    px-9
+    py-3
+    lg:px-12
+    lg:py-0
+    lg:items-start
+    z-header;
 
   transition: var(--medium-transition);
 
   &.scrolled {
-    transform: translate3d(0, 100%, 0);
-
-    @screen lg {
-      transform: translate3d(0, -100%, 0);
-    }
+    transform: translate3d(0, -100%, 0);
   }
 }
 
 .list {
-  @apply flex
-    gap-14;
+  @apply gap-14
+    hidden
+    lg:flex;
 
   & a {
     @apply relative
@@ -197,6 +199,6 @@ export default {
 }
 
 .logo {
-  @apply mt-3;
+  @apply lg:mt-3;
 }
 </style>

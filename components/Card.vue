@@ -48,8 +48,6 @@
 </template>
 
 <script>
-import project from '../studio/schemas/documents/project';
-
 export default {
   props: {
       project: {

@@ -61,6 +61,12 @@
       mb-2;
   }
 
+  & p,
+  & li {
+    @apply text-paragraphMobile
+      lg:text-paragraph;
+  }
+
   & p:empty {
     @apply pb-6;
   }

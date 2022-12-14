@@ -38,7 +38,7 @@ export default {
 
 <style module lang="postcss">
 .page {
-  @apply lg:pt-[120px];
+  @apply pt-[120px];
 
   @screen lg {
     min-height: calc(var(--vh, 1vh) * 100);
@@ -46,7 +46,9 @@ export default {
 }
 
 .content {
-  @apply lg:w-1/2
+  @apply px-9
+    lg:px-0
+    lg:w-1/2
     lg:pr-12
     ml-auto
     overflow-hidden;

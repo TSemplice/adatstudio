@@ -5,12 +5,11 @@
       $style.icon,
       {
         [$style.open]: $store.state.menu.isOpen,
-        [$style.home]: isHome
       }
     ]"
-    aria-label="Hamburger Menu">
-    <span />
-    <span />
+    aria-label="Toggle Menu">
+    <p>{{ $t('menu') }}</p>
+    <p>{{ $t('close') }}</p>
     <span />
   </button>
 </template>
@@ -29,77 +28,59 @@ export default {
 <style module lang="postcss">
 .icon {
   @apply flex
-    flex-col
-    justify-between
     relative
-    h-[16px]
+    items-center
     p-0
     m-0
+    overflow-hidden
     lg:hidden;
 
   background-color: transparent;
   border: none;
 
-  span {
-    @apply block
-      w-[36px]
-      h-[2px]
-      pointer-events-none
-      bg-light;
+  & > p {
+    @apply text-label
+      uppercase
+      font-black;
 
     transition: var(--medium-transition);
-    transition-delay: 0.4s;
+  }
 
-    &:first-of-type, &:last-of-type {
-      transform-origin: left center;
-    }
+  & > p:last-of-type {
+    @apply absolute;
 
+    transform: translate3d(0, 20px, 0);
+  }
 
-    &:nth-of-type(2) {
-      transform-origin: right center;
-    }
+  & > span {
+    @apply w-[20px]
+      h-[20px]
+      block
+      bg-dark
+      ml-[10px];
+
+    border-radius: 100%;
+    transition: var(--medium-transition);
   }
 
   &.open {
-    span {
-      transform: scaleX(0);
-      transition-delay: 0s;
+    & > p {
+      @apply text-light;
     }
 
-    &::before {
-      transition-delay: 0.4s;
-      transform: rotate(45deg) scale(1);
+    & > p:first-of-type {
+      transform: translate3d(0, -20px, 0);
     }
 
-    &::after {
-      transition-delay: 0.4s;
-      transform: rotate(-45deg) scale(1);
+    & > p:last-of-type {
+      transform: translate3d(0, 0, 0);
     }
-  }
 
-  &::before, &::after {
-    @apply absolute
-      w-[2px]
-      h-[28px]
-      bg-light;
-
-    content: '';
-    top: calc(50% - 14px);
-    left: calc(50% - 1px);
-
-    transform: rotateZ(45deg);
-    transition-delay: 0s;
-    transition: var(--medium-transition);
-  }
-
-  &::before {
-    transform-origin: 50% 50%;
-    transform: rotate(45deg) scale(0);
-  }
-
-  &::after {
-    transform-origin: 50% 50%;
-    transform: rotate(-45deg) scale(0);
+    & > span {
+      @apply bg-light;
+    
+      border-radius: 6px;
+    }
   }
 }
 </style>

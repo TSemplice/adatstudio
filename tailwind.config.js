@@ -86,6 +86,14 @@ module.exports = {
         lineHeight: '18px',
         letterSpacing: '0.04em',
       }],
+      label: ['8px', {
+        lineHeight: '6px',
+        letterSpacing: '0.04em'
+      }],
+      link: ['18px', {
+        lineHeight: '16px',
+        letterSpacing: '0.04em'
+      }]
     },
     zIndex: {
       behind: -1,

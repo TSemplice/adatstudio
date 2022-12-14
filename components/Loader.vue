@@ -27,14 +27,21 @@
     flex-col
     justify-center
     items-center
-    z-overlay;
+    z-overlay
+    p-6;
 
   & > svg:first-of-type {
-    @apply mb-3;
+    @apply w-full
+      h-auto
+      mb-3
+      lg:w-[478px];
   }
 
   & > svg {
-    @apply opacity-0;
+    @apply w-full
+      h-auto
+      lg:w-[485px]
+      opacity-0;
   }
 }
 </style>

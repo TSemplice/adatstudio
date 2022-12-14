@@ -45,7 +45,9 @@
   }
 
   & > p {
-    @apply mb-9;
+    @apply text-paragraphMobile
+      lg:text-paragraph
+      mb-9;
   }
 }
 

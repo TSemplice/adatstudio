@@ -17,5 +17,6 @@ export default {
   vegetarian: 'vegetarian',
   view_all: 'view all',
   close: 'close',
-  how_reach: 'How to reach us'
+  how_reach: 'How to reach us',
+  menu: 'menu'
 }

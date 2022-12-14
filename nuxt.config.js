@@ -197,12 +197,12 @@ export default {
         name: 'English',
         file: 'en.js'
       },
-      {
-        code: 'it',
-        iso: 'it',
-        name: 'Italiano',
-        file: 'it.js'
-      }
+      // {
+      //   code: 'it',
+      //   iso: 'it',
+      //   name: 'Italiano',
+      //   file: 'it.js'
+      // }
     ],
     lazy: true,
     strategy: 'prefix',

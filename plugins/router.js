@@ -4,10 +4,6 @@ export default ({ app }) => {
       app.store.commit('menu/TOGGLE_MENU')
     }
 
-    if (app.store.state.menu.activeSub.length) {
-      app.store.commit('menu/TOGGLE_SUB', '')
-    }
-
     next()
   })
 }
