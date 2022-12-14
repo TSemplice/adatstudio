@@ -1,8 +1,7 @@
 {
     "base": "en",
     "languages": [
-        { "name": "en", "title": "English" },
-      { "name": "it", "title": "Italian" }
+        { "name": "en", "title": "English" }
     ],
     "idStructure": "delimiter"
 }

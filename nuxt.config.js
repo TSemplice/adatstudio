@@ -153,7 +153,7 @@ export default {
       theme_color: '#1E1E1E'
     },
     icon: {
-      fileName: 'favicon.png'
+      fileName: 'icon.png'
     },
     workbox: {
       clientsClaim: false
