@@ -9,7 +9,7 @@
 
 <style module lang="postcss">
 .logo {
-  @apply w-[87px]
+  @apply w-[92px]
     h-auto
     lg:w-[160px];
 }

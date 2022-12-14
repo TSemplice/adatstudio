@@ -11,15 +11,29 @@ export default {
       mode: 'out-in',
 
       beforeEnter(el) {
+        const footer = qs('footer')
+
+        gsap.set([el, footer ], {
+          autoAlpha: 0
+        })
       },
 
       enter(el, done) {
+
         setTimeout(() => {
+          const footer = qs('footer')
+          const tl = gsap.timeline({ paused: true, onComplete: done })
+
+          tl.to([el, footer], { duration: 0.8, autoAlpha: 1 })
+
           if (from === undefined) {
-            animations.get('firstEnterLoader')(done).play()
+            animations.get('firstEnterLoader')(
+              tl.play()
+            ).play()
           } else {
-            animations.get('loaderOut')(done).play()
+            tl.play()
           }
+
           this.$nuxt.$emit('start-locomotive')
           this.$nuxt.$emit('update-locomotive')
           this.$store.commit('scroll/resetDirection')
@@ -28,10 +42,16 @@ export default {
 
       leave(el, done) {
         this.$nuxt.$emit('stop-locomotive')
-        animations.get('loaderIn')(() => {
-          done()
-          this.$nuxt.$emit('reset-locomotive')
-        }).play()
+        const footer = qs('footer')
+
+        gsap.to([el, footer], {
+          duration: 0.8,
+          autoAlpha: 0,
+          onComplete: () => {
+            done()
+            this.$nuxt.$emit('reset-locomotive')
+          }
+        })
       }
     }
   }

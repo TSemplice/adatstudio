@@ -3,7 +3,7 @@
   <footer
     :class="$style.footer"
   >
-    <p>©adat2022</p>
+    <p>©2022ADAT Antonio Atripaldi and Andrea Debilio</p>
     <ul :class="$style.list" v-if="!$fetchState.pending && nav">
       <li
         v-for="item in items"
@@ -89,7 +89,7 @@ export default {
     lg:bottom-16;
 
   & > p {
-    @apply text-paragraph
+    @apply text-paragraphMobile
       uppercase
       hidden
       lg:block;
