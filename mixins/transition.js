@@ -22,12 +22,16 @@ export default {
           }
           this.$nuxt.$emit('start-locomotive')
           this.$nuxt.$emit('update-locomotive')
+          this.$store.commit('scroll/resetDirection')
         }, 600)
       },
 
       leave(el, done) {
         this.$nuxt.$emit('stop-locomotive')
-        animations.get('loaderIn')(done).play()
+        animations.get('loaderIn')(() => {
+          done()
+          this.$nuxt.$emit('reset-locomotive')
+        }).play()
       }
     }
   }

@@ -21,7 +21,8 @@
 
 <style module lang="postcss">
 .text {
-  @apply py-[80px];
+  @apply py-[18px]
+    lg:py-[80px];
 
   & h1 {
     @apply text-headline01Mobile
@@ -72,7 +73,8 @@
   }
 
   & ul {
-    @apply pl-8;
+    @apply pl-6
+      lg:pl-8;
 
     list-style: unset;
   }

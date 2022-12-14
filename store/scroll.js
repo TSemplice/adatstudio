@@ -14,5 +14,11 @@ export const state = () => ({
 export const mutations = {
   setScroll: (state, payload) => {
     state.scroll = Object.assign({}, state.scroll, payload)
+  },
+
+  resetDirection: (state) => {
+    state.scroll.direction = 'up'
+
+    console.log(state.scroll.direction)
   }
 }

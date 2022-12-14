@@ -64,7 +64,7 @@ export default {
 
   computed: {
     translations() {
-      if (project) {
+      if (this.project) {
         return this.project.translations[this.$i18n.locale]
       } else {
         return {}

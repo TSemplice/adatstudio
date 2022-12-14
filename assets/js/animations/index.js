@@ -623,7 +623,7 @@ const loaderIn = (done) => {
     .fromTo(loader, {
       autoAlpha: 0
     }, {
-      duration: 0.8,
+      duration: 0.4,
       autoAlpha: 1,
       ease: Power4.easeOut
     })
@@ -653,10 +653,10 @@ const loaderOut = (done) => {
       ease: Power4.easeOut
     })
     .to(loader, {
-      duration: 0.8,
+      duration: 0.4,
       autoAlpha: 0,
       ease: Power4.easeOut
-    })
+    }, '-=0.4')
 
   return tl
 }

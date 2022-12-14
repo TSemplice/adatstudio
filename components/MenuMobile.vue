@@ -134,6 +134,12 @@ export default {
     @apply text-headline02
       uppercase
       font-black;
+
+    transition: var(--medium-transition);
+
+    &:global(.nuxt-link-exact-active) {
+      @apply opacity-40;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <section :class="$style.gallery">
+  <section :class="$style.gallery" ref="gallery">
     <h3 v-if="data.title">{{ data.title }}</h3>
     <div :class="$style.wrapper">
       <ul :class="$style.scroller" :style="{ transform: `translate3d(-${(240 * index) + (10 * index)}px, 0, 0)` }">
@@ -40,6 +40,12 @@
 <script>
 import gsap from 'gsap'
 
+let Hammer
+
+if (process.client) {
+  Hammer = require('hammerjs')
+}
+
 export default {
   props: {
     data: {
@@ -60,6 +66,19 @@ export default {
     if (this.autoplay) {
       setTimeout(this.setPercentage, 2000)
     }
+
+    const hm = new Hammer(this.$refs.gallery)
+
+    hm.on('swipeleft', () => {
+      if (this.index === this.data.projects.length - 1) return
+
+      this.setIndex(this.index + 1, false)
+    })
+
+    hm.on('swiperight', () => {
+      if (this.index === 0) return
+      this.setIndex(this.index - 1, false)
+    })
   },
 
   methods: {
@@ -80,6 +99,7 @@ export default {
     setPercentage() {
       if (this.autoplay) {
         this.timeline = gsap.timeline({ onComplete: () => {
+          gsap.set(this.$refs.circle[this.index], { clearProps: 'all' })
           const newIndex = this.index === this.data.projects.length - 1 ? 0 : this.index + 1
           this.index = newIndex
 
@@ -105,7 +125,6 @@ export default {
 
   & > h3 {
     @apply text-headline03Mobile
-      lg:text-headline03
       font-black
       uppercase
       mb-[10px];
@@ -117,7 +136,12 @@ export default {
     w-[fit-content]
     gap-[10px];
 
-  transition: var(--long-transition);
+  padding-left: calc(((100vw - 72px) - 240px) / 2);
+  transition: var(--medium-transition);
+
+  @screen lg {
+    padding-left: 0;
+  }
 }
 
 .controls {
@@ -153,7 +177,7 @@ export default {
       &.notAutoplay {
         @apply opacity-100;
 
-        transition: var(--long-transition);
+        transition: var(--medium-transition);
       }
     }
 
