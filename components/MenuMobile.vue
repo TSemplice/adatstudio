@@ -30,7 +30,7 @@
           <a data-item href="https://semplice.is" rel="noopener" target="_blank">{{ $t('credits') }}</a>
         </div>
         <div>
-          <p data-item :class="$style.copyright">©2022ADAT Antonio Atripaldi and Andrea Debilio</p>
+          <p data-item :class="$style.copyright">©2022ADATSTUDIO Antonio Atripaldi and Andrea Debilio</p>
         </div>
       </div>
     </aside>
@@ -175,7 +175,9 @@ export default {
 }
 
 .copyright {
-  @apply text-[10px]
+  @apply text-[9px]
     uppercase;
+
+  letter-spagcing: 0.04em;
 }
 </style>

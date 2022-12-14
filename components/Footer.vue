@@ -3,7 +3,7 @@
   <footer
     :class="$style.footer"
   >
-    <p>©2022ADAT Antonio Atripaldi and Andrea Debilio</p>
+    <p>©2022ADATSTUDIO Antonio Atripaldi and Andrea Debilio</p>
     <ul :class="$style.list" v-if="!$fetchState.pending && nav">
       <li
         v-for="item in items"

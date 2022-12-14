@@ -70,14 +70,14 @@ export default {
     const hm = new Hammer(this.$refs.gallery)
 
     hm.on('swipeleft', () => {
-      if (this.index === this.data.projects.length - 1) return
+      const newIndex = this.index === this.data.projects.length - 1 ? 0 : this.index + 1
 
-      this.setIndex(this.index + 1, false)
+      this.setIndex(newIndex, false)
     })
 
     hm.on('swiperight', () => {
-      if (this.index === 0) return
-      this.setIndex(this.index - 1, false)
+      const newIndex = this.index === 0 ? this.data.projects.length - 1 : this.index - 1
+      this.setIndex(newIndex, false)
     })
   },
 
