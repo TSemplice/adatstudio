@@ -61,6 +61,7 @@ export default {
 
     border-radius: 100%;
     transition: var(--medium-transition);
+    animation: morph 2s linear alternate infinite;
   }
 
   &.open {
@@ -78,9 +79,17 @@ export default {
 
     & > span {
       @apply bg-light;
-    
-      border-radius: 6px;
     }
+  }
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 2px;
+  }
+
+  100% {
+    border-radius: 100%;
   }
 }
 </style>
