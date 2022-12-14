@@ -133,7 +133,8 @@ export default {
   & a {
     @apply text-headline02
       uppercase
-      font-black;
+      font-black
+      block;
 
     transition: var(--medium-transition);
 
