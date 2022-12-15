@@ -13,6 +13,7 @@
         <SanityCta v-bind="item.cta" />
       </li>
     </ul>
+    <p v-if="nav.settings && nav.settings.copyright">{{ nav.settings.copyright }}</p>
   </footer>
 </template>
 
@@ -89,11 +90,18 @@ export default {
     lg:left-12
     lg:bottom-16;
 
-  & > p {
+  & > p:first-of-type {
     @apply text-paragraphMobile
       uppercase
       hidden
       lg:block;
+  }
+
+  & > p:last-of-type {
+    @apply text-headline05Mobile
+      uppercase
+      mt-10
+      lg:hidden;
   }
 }
 
