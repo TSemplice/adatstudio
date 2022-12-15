@@ -82,18 +82,22 @@ export default {
           list: {
             items: [
               {
+                _type: 'labeledItem',
                 label: 'Location',
                 content: 'Dubai, United Arab Emirates'
               },
               {
+                _type: 'labeledItem',
                 label: 'Year',
                 content: '2022'
               },
               {
+                _type: 'labeledItem',
                 label: 'Status',
                 content: 'Complete'
               },
               {
+                _type: 'labeledItem',
                 label: 'Client',
                 content: 'Expo Dubai 2020'
               }
