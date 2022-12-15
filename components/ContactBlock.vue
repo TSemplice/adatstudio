@@ -19,7 +19,7 @@
         <a v-if="data.cookies" :href="data.cookies" rel="noopener" target="_blank">Cookies Policy</a>
         <a href="https://semplice.is" rel="noopener" target="_blank">{{ $t('credits') }}</a>
       </div>
-      <p :class="$style.copy">©ADAT STUDIO2022</p>
+      <!-- <p :class="$style.copy">©ADAT STUDIO2022</p> -->
     </div>
   </section>
 </template>
@@ -38,7 +38,8 @@
 <style module lang="postcss">
 .contacts {
   @apply pt-[18px]
-    pb-9
+    pb-2
+    lg:pb-9
     lg:py-20;
 
   & h1 {
