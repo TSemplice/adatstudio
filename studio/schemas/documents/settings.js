@@ -47,6 +47,11 @@ export default {
       name: 'cookies',
       type: 'url',
       title: 'Cookies Url'
+    },
+    {
+      name: 'copyright',
+      type: 'string',
+      title: 'Copiryght Label that appears in footer.'
     }
     // {
     //   name: 'translations',

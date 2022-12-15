@@ -2,9 +2,10 @@
   <!-- v-if="!$fetchState.pending && footer && $route.path !== `/${$i18n.locale}/menu`" -->
   <footer
     :class="$style.footer"
+    v-if="!$fetchState.pending && nav"
   >
-    <p>©2022ADATSTUDIO Antonio Atripaldi and Andrea Debilio</p>
-    <ul :class="$style.list" v-if="!$fetchState.pending && nav">
+    <p v-if="nav.settings && nav.settings.copyright">{{ nav.settings.copyright }}</p>
+    <ul :class="$style.list">
       <li
         v-for="item in items"
         :key="item._key"

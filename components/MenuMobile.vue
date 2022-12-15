@@ -30,7 +30,7 @@
           <a data-item href="https://semplice.is" rel="noopener" target="_blank">{{ $t('credits') }}</a>
         </div>
         <div>
-          <p data-item :class="$style.copyright">©2022ADATSTUDIO Antonio Atripaldi and Andrea Debilio</p>
+          <p v-if="settings.copyright" data-item :class="$style.copyright">{{ settings.copyright }}</p>
         </div>
       </div>
     </aside>
