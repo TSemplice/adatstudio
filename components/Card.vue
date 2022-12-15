@@ -86,6 +86,8 @@ export default {
 .card {
   @apply w-[240px]
     h-[240px]
+    lg:w-[300px]
+    lg:h-[300px]
     relative;
 
   flex: 0 0 auto;

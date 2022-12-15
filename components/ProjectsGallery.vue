@@ -2,7 +2,7 @@
   <section :class="$style.gallery" ref="gallery">
     <h3 v-if="data.title">{{ data.title }}</h3>
     <div :class="$style.wrapper">
-      <ul :class="$style.scroller" :style="{ transform: `translate3d(-${(240 * index) + (10 * index)}px, 0, 0)` }">
+      <ul :class="$style.scroller" :style="{ transform: `translate3d(-${(amount * index) + (10 * index)}px, 0, 0)` }">
         <Card
           v-for="project in data.projects"
           :key="project._key"
@@ -58,7 +58,8 @@ export default {
     return {
       index: 0,
       autoplay: true,
-      timeline: null
+      timeline: null,
+      amount: 240
     }
   },
 
@@ -84,6 +85,7 @@ export default {
   methods: {
     setIndex(index, autoplay) {
       this.index = index
+      this.amount = window.innerWidth < 1024 ? 240 : 300
 
       if (autoplay === false && this.autoplay) {
         this.autoplay = autoplay

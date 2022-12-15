@@ -39,7 +39,9 @@ export default {
   border: none;
 
   & > p {
-    @apply text-label
+    @apply text-[14px]
+      leading-[14px]
+      pt-[4px]
       uppercase
       font-black;
 
