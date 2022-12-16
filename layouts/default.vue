@@ -23,8 +23,8 @@
       <div>
         <nuxt />
       </div>
+      <Footer />
     </LocomotiveScroll>
-    <Footer />
   </div>
 </template>
 

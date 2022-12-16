@@ -668,20 +668,28 @@ const firstEnterLoader = (done) => {
   const tl = gsap.timeline({ paused: true, onComplete: done })
 
   tl
-    .fromTo(svgs, {
+    .fromTo(svgs[0], {
       autoAlpha: 0
     }, {
-      duration: 1.4,
+      duration: 1.8,
       autoAlpha: 1,
-      stagger: 0.2,
+      delay: 1,
       ease: Power4.easeOut
     })
+    .fromTo(svgs[1], {
+      autoAlpha: 0,
+      yPercent: 200
+    }, {
+      duration: 2,
+      autoAlpha: 1.8,
+      yPercent: 0,
+      ease: Power4.easeOut
+    }, '-=0.6')
     .to(svgs, {
       duration: 1.4,
       autoAlpha: 0,
-      stagger: 0.2,
       ease: Power4.easeOut
-    }, '+=1')
+    }, '+=0.8')
     .to(loader, {
       duration: 0.8,
       autoAlpha: 0,

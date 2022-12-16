@@ -84,11 +84,7 @@ export default {
 
 <style module lang="postcss">
 .footer {
-  @apply p-9
-    lg:p-0
-    lg:fixed
-    lg:left-12
-    lg:bottom-16;
+  @apply p-9;
 
   & > p:first-of-type {
     @apply text-paragraphMobile

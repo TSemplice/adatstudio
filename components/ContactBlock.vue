@@ -82,7 +82,7 @@
 }
 
 .links {
-  @apply mt-[184px];
+  @apply mt-[64px];
 
   & > div:first-of-type {
     & p {
@@ -97,7 +97,7 @@
     }
 
     @apply mb-6
-      lg:mb-[80px];
+      lg:mb-16;
 
     & div {
       @apply flex
