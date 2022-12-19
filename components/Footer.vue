@@ -4,7 +4,10 @@
     :class="$style.footer"
     v-if="!$fetchState.pending && nav"
   >
-    <p v-if="nav.settings && nav.settings.copyright">{{ nav.settings.copyright }}</p>
+    <SanityContent
+      v-if="nav.settings && nav.settings.copyright"
+      :blocks="nav.settings.copyright"
+    />
     <ul :class="$style.list">
       <li
         v-for="item in items"
@@ -13,7 +16,10 @@
         <SanityCta v-bind="item.cta" />
       </li>
     </ul>
-    <p v-if="nav.settings && nav.settings.copyright">{{ nav.settings.copyright }}</p>
+    <SanityContent
+      v-if="nav.settings && nav.settings.copyright"
+      :blocks="nav.settings.copyright"
+    />
   </footer>
 </template>
 
@@ -86,18 +92,26 @@ export default {
 .footer {
   @apply p-9;
 
-  & > p:first-of-type {
+  & > div:first-of-type {
     @apply text-paragraphMobile
       uppercase
       hidden
       lg:block;
+
+    & > p:empty {
+      @apply pb-[12px];
+    }
   }
 
-  & > p:last-of-type {
+  & > div:last-of-type {
     @apply text-headline05Mobile
       uppercase
       mt-10
       lg:hidden;
+
+    & > p:empty {
+      @apply pb-[10px];
+    }
   }
 }
 

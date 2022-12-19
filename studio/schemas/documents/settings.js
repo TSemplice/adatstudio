@@ -50,8 +50,9 @@ export default {
     },
     {
       name: 'copyright',
-      type: 'string',
-      title: 'Copiryght Label that appears in footer.'
+      type: 'array',
+      title: 'Copiryght Label that appears in footer.',
+      of: [{ type: 'block' }]
     }
     // {
     //   name: 'translations',

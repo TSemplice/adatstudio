@@ -30,7 +30,12 @@
           <a data-item href="https://semplice.is" rel="noopener" target="_blank">{{ $t('credits') }}</a>
         </div>
         <div>
-          <p v-if="settings.copyright" data-item :class="$style.copyright">{{ settings.copyright }}</p>
+          <SanityContent
+            data-item
+            :class="$style.copyright"
+            v-if="settings && settings.copyright"
+            :blocks="settings.copyright"
+          />
         </div>
       </div>
     </aside>
@@ -175,9 +180,14 @@ export default {
 }
 
 .copyright {
-  @apply text-[9px]
+  @apply text-[12px]
+    leading-[12px]
     uppercase;
 
   letter-spagcing: 0.04em;
+
+  & > p:empty {
+    @apply pb-[8px];
+  }
 }
 </style>

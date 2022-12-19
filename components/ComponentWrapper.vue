@@ -48,10 +48,7 @@ export default {
 
 .content {
   @apply px-9
-    lg:px-0
-    lg:w-1/2
-    lg:pr-12
-    ml-auto
+    lg:px-12
     overflow-hidden;
 }
 </style>

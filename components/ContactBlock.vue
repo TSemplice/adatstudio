@@ -40,7 +40,9 @@
   @apply pt-[18px]
     pb-2
     lg:pb-9
-    lg:py-20;
+    lg:py-20
+    lg:w-1/2
+    lg:ml-auto;
 
   & h1 {
     @apply text-headline02Mobile

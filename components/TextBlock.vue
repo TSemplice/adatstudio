@@ -22,7 +22,9 @@
 <style module lang="postcss">
 .text {
   @apply py-[18px]
-    lg:py-[80px];
+    lg:py-[80px]
+    lg:w-1/2
+    lg:ml-auto;
 
   & h1 {
     @apply text-headline01Mobile

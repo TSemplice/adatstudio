@@ -42,7 +42,7 @@
   }
 
   & > svg {
-    @apply w-full
+    @apply w-[87%]
       h-auto
       lg:w-[408px]
       opacity-0;
