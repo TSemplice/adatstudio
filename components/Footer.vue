@@ -94,7 +94,6 @@ export default {
 
   & > div:first-of-type {
     @apply text-paragraphMobile
-      uppercase
       hidden
       lg:block;
 
@@ -105,7 +104,6 @@ export default {
 
   & > div:last-of-type {
     @apply text-headline05Mobile
-      uppercase
       mt-10
       lg:hidden;
 
