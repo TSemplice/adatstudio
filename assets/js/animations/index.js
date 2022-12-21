@@ -671,20 +671,18 @@ const firstEnterLoader = (done) => {
     .fromTo(svgs[0], {
       autoAlpha: 0
     }, {
-      duration: 1.8,
+      duration: 2,
       autoAlpha: 1,
       delay: 1,
       ease: Power4.easeOut
     })
     .fromTo(svgs[1], {
       autoAlpha: 0,
-      yPercent: 200
     }, {
       duration: 2,
       autoAlpha: 1.8,
-      yPercent: 0,
       ease: Power4.easeOut
-    }, '-=0.6')
+    }, '-=0.2')
     .to(svgs, {
       duration: 1.4,
       autoAlpha: 0,
