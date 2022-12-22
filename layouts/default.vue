@@ -15,7 +15,7 @@
     <LocomotiveScroll
       ref="scroller"
       :getted-options="{
-        lerp: 0.06,
+        lerp: 0.07,
         smooth: true,
         direction: 'vertical',
         getDirection: true

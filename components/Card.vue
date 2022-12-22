@@ -109,6 +109,10 @@ export default {
 
   padding-bottom: 60%;
 
+  @screen lg {
+    padding-bottom: 70%;
+  }
+
   & img {
     @apply absolute
       top-0
