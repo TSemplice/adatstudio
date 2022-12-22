@@ -21,10 +21,10 @@
         getDirection: true
       }"
     >
-      <div>
+      <div :class="$style.wrapper">
         <nuxt />
+        <Footer />
       </div>
-      <Footer />
     </LocomotiveScroll>
   </div>
 </template>
@@ -92,6 +92,12 @@ export default {
   } */
   &.hidden {
     @apply opacity-0;
+  }
+}
+
+.wrapper {
+  @screen lg {
+    min-height: calc(var(--vh, 1vh) * 100);
   }
 }
 </style>

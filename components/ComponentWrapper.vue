@@ -40,10 +40,6 @@ export default {
 .page {
   @apply pt-[182px]
     lg:pt-[120px];
-
-  @screen lg {
-    min-height: calc(var(--vh, 1vh) * 100);
-  }
 }
 
 .content {
